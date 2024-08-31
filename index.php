@@ -9,7 +9,16 @@
     
     <?php
         include_once("conexion.php");
-        CConexion::ConexionBD();
+        // guardo en $conn el return de la funcion "ConexionBD" de la clase "CConexion"
+        $conn = CConexion::ConexionBD();
+        // preparo la consulta que quiero realizar.
+        $consulta = $conn->prepare("SELECT * FROM Almacen");
+        // ejecuta, nada mas.
+        $consulta -> execute();
+        // conecta la consulta con la base de datos
+        $datos = $consulta -> fetchAll(PDO::FETCH_ASSOC);
+        // va mostrando de forma ordenada la consulta zz
+        var_dump($datos);
     ?>
     
 </body>
