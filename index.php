@@ -6,20 +6,23 @@
     <title>Document</title>
 </head>
 <body>
-    
+
+
     <?php
         include_once("conexion.php");
         // guardo en $conn el return de la funcion "ConexionBD" de la clase "CConexion"
         $conn = CConexion::ConexionBD();
-        // preparo la consulta que quiero realizar.
-        $consulta = $conn->prepare("SELECT * FROM Almacen");
-        // ejecuta, nada mas.
-        $consulta -> execute();
-        // conecta la consulta con la base de datos
-        $datos = $consulta -> fetchAll(PDO::FETCH_ASSOC);
-        // va mostrando de forma ordenada la consulta zz
-        var_dump($datos);
+        // Llama la clase y hace la funcion para obtener la consulta y mostrarlo con tablas
+        CConexion::Cosultar($conn,'Almacen');
+        CConexion::Cosultar($conn,'Clientes');
+        CConexion::Cosultar($conn,'Distribuidora');
+        CConexion::Cosultar($conn,'Empleados');
+        CConexion::Cosultar($conn,'Localidades');
+        CConexion::Cosultar($conn,'Pedidos');
+        CConexion::Cosultar($conn,'Productos');
+        CConexion::Cosultar($conn,'proveedores');
     ?>
+    
     
 </body>
 </html>

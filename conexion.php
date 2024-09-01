@@ -22,6 +22,34 @@ class CConexion {
         return $conn;
     }
 
+    public static function Cosultar($conn,$tabla_nombre){
+        // preparo la consulta que quiero realizar.
+        $consulta = $conn->prepare("SELECT * FROM $tabla_nombre");
+        // ejecuta, nada mas.
+        $consulta -> execute();
+        // conecta la consulta con la base de datos
+        $datos = $consulta -> fetchAll(PDO::FETCH_ASSOC);
+
+        // Comenzar la tabla
+        echo "<br><table border='1'>";
+        // Crear la fila de encabezados (keys del primer elemento del array)
+        echo "<tr>";
+        echo "$tabla_nombre";
+            foreach (array_keys($datos[0]) as $key) {
+                echo "<th>{$key}</th>";
+            }
+        echo "</tr>";
+        // Iterar sobre los datos para crear las filas de la tabla
+        foreach ($datos as $fila) {
+            echo "<tr>";
+            foreach ($fila as $valor) {
+                echo "<td>{$valor}</td>";
+            }
+            echo "</tr>";
+        }
+        // Cerrar la tabla
+        echo "</table><br>";
+    }
 }
 
 
