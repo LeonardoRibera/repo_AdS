@@ -1,56 +1,69 @@
 <?php
+require 'settings.php';
 
-class CConexion {
-   public static function ConexionBD(){
-    // guardo info del SQLserver en variables para usarlo en la conexion del SQL
-        $host = 'localhost';
-        $dbname = 'MercadoMayorista';
-        $username = 'sa';
-        $password = '1234';
-        $puerto = 1433;
+class conexion {
+    private $conector = null;
 
-        try{
-        // guardo en $conn todo lo que agarre de la BD
-            $conn = new PDO ("sqlsrv:server=$host,$puerto;database=$dbname",$username,$password);
-            echo "Se conecto correctamente\n";
-        }
-        catch(PDOException $exp){
-        // en caso de que no pueda encontrar tira el error
-            echo ("No se logró conectar correctamente con la base de datos: $dbname, error: $exp");
-        }
-        
-        return $conn;
-    }
-
-    public static function Cosultar($conn,$tabla_nombre){
-        // preparo la consulta que quiero realizar.
-        $consulta = $conn->prepare("SELECT * FROM $tabla_nombre");
-        // ejecuta, nada mas.
-        $consulta -> execute();
-        // conecta la consulta con la base de datos
-        $datos = $consulta -> fetchAll(PDO::FETCH_ASSOC);
-
-        // Comenzar la tabla
-        echo "<br><table border='1'>";
-        // Crear la fila de encabezados (keys del primer elemento del array)
-        echo "<tr>";
-        echo "$tabla_nombre";
-            foreach (array_keys($datos[0]) as $key) {
-                echo "<th>{$key}</th>";
-            }
-        echo "</tr>";
-        // Iterar sobre los datos para crear las filas de la tabla
-        foreach ($datos as $fila) {
-            echo "<tr>";
-            foreach ($fila as $valor) {
-                echo "<td>{$valor}</td>";
-            }
-            echo "</tr>";
-        }
-        // Cerrar la tabla
-        echo "</table><br>";
+    public function getConexion()
+    {
+        // Conectar a la base de datos
+        $this->conector = new PDO("sqlsrv:server=".SERVIDOR.";database=".DATABASE, USUARIO, PASSWORD);
+        return $this->conector;
     }
 }
 
+$con = new conexion();
 
+if ($con->getConexion() != null) {
+    // Obtener la lista de tablas de la base de datos
+    $pps = $con->getConexion()->prepare("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'");
+    $pps->execute();
+    
+    // Obtener todas las tablas en un array
+    $tablas = $pps->fetchAll(PDO::FETCH_ASSOC);
+    
+    // // Iterar sobre cada tabla y generar una tabla HTML para mostrar sus datos
+    // foreach ($tablas as $tabla) {
+    //     $nombreTabla = $tabla['TABLE_NAME'];
+        
+    //     // Consultar todos los datos de la tabla actual
+    //     $pps = $con->getConexion()->prepare("SELECT * FROM " . $nombreTabla);
+    //     $pps->execute();
+    //     $datosTabla = $pps->fetchAll(PDO::FETCH_ASSOC);
+
+    //     // Mostrar el nombre de la tabla
+    //     echo "<h2>Tabla: $nombreTabla</h2>";
+
+    //     if (count($datosTabla) > 0) {
+    //         // Comenzar la tabla HTML
+    //         echo "<table border='1' cellpadding='5' cellspacing='0'>";
+
+    //         // Encabezado de la tabla con los nombres de las columnas
+    //         echo "<tr>";
+    //         foreach (array_keys($datosTabla[0]) as $columna) {
+    //             echo "<th>$columna</th>";
+    //         }
+    //         echo "</tr>";
+
+    //         // Filas con los datos de cada registro de la tabla
+    //         foreach ($datosTabla as $fila) {
+    //             echo "<tr>";
+    //             foreach ($fila as $valor) {
+    //                 echo "<td>$valor</td>";
+    //             }
+    //             echo "</tr>";
+    //         }
+
+    //         // Cerrar la tabla
+    //         echo "</table>";
+    //     } else {
+    //         // Si no hay datos en la tabla
+    //         echo "<p>No hay datos en la tabla $nombreTabla.</p>";
+    //     }
+
+    //     echo "<br>"; // Espacio entre tablas
+    // }
+} else {
+    echo "Error al conectarse a la base de datos";
+}
 ?>
