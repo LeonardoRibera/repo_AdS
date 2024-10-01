@@ -1,0 +1,49 @@
+.navbar-tittle{
+    color: bisque !important;
+    cursor: default;
+}
+.navbar{
+    background-color: rgb(102, 15, 15) !important;
+    width: 100%;
+    overflow: hidden;
+}
+.nav-item{
+    background-color: rgb(188, 27, 27) !important;
+    color: bisque !important;
+    margin: 2px;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 5px !important; /* Aplica padding uniforme a todos los botones */
+    width: 104px;
+    text-align: center; /* Centra el texto dentro de los botones */
+
+    cursor: pointer;
+    box-shadow: 0 3px rgb(144, 70, 70);
+}
+
+/* animacion de boton */
+.nav-item:hover{background-color: rgb(161, 23, 23) !important;}
+.nav-item:active {
+    background-color: rgb(161, 23, 23) !important;
+    box-shadow: 0 1px rgb(89, 43, 43);
+    transform: translateY(4px);
+}
+
+
+/* ajuste del navbar   */
+.navbar-nav {
+    max-width: 90%; /* Ajusta esto según tus necesidades (ej: 80%) */
+    flex-wrap: wrap; /* Permite que los elementos se reorganicen cuando no haya espacio */
+    max-width: 100%;
+}
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+.navbar-nav .nav-item .nav-link {
+    padding: 10px 20px;
+    margin: 0;
+}
+* {
+    box-sizing: border-box; /* Incluye padding y border en el ancho del elemento */
+}

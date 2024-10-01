@@ -1,9 +1,9 @@
 <?php
 define ("USUARIO","sa");
 
-define ("PASSWORD","123");
+define ("PASSWORD","1234");
 
 define ("DATABASE","MercadoMayorista");
 
-define ("SERVIDOR","DESKTOP-QB22C4J\SQLEXPRESS");
+define ("SERVIDOR","DESKTOP-QNDHT7C");
 ?>
