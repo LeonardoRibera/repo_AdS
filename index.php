@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tabla'])) {
     try {
         $pps->execute($valores); // Usar el arreglo de valores
         echo "<p>Registro insertado correctamente.</p>";
+        header("Location: ?tabla=$nombreTabla"); // Redireccionar a la misma página para ver la tabla actualizada
+        exit;
     } catch (PDOException $e) {
         echo "<p>Error al insertar el registro: " . $e->getMessage() . "</p>";
     }
@@ -55,6 +57,8 @@ if (isset($_GET['eliminar']) && isset($_GET['tabla']) && isset($_GET['id'])) {
         try {
             $pps = $con->getConexion()->prepare($sql);
             $pps->execute([$id]);
+            header("Location: ?tabla=$nombreTabla"); // Redireccionar para ver la tabla actualizada
+            exit;
         } catch (PDOException $e) {
             echo "<p>Error al eliminar el registro: " . $e->getMessage() . "</p>";
         }
@@ -144,10 +148,10 @@ if (isset($_GET['eliminar']) && isset($_GET['tabla']) && isset($_GET['id'])) {
             echo "<h3>Insertar nuevo registro</h3>";
             echo "<form method='POST' action=''>";
             echo "<input type='hidden' name='tabla' value='$nombreTabla'>";
-            echo "<input type='hidden' name='columnas[]' value='" . implode("', '", array_keys($datosTabla[0])) . "'>";
 
             // Crear campos de entrada para cada columna, incluyendo el ID
             foreach (array_keys($datosTabla[0]) as $columna) {
+                echo "<input type='hidden' name='columnas[]' value='$columna'>";
                 echo "<div class='mb-3'>";
                 echo "<label for='$columna' class='form-label'>$columna</label>";
                 echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
