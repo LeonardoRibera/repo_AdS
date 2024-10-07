@@ -1,4 +1,5 @@
 <?php
+include("conexion.php");
 
 // Obtener la lista de tablas de la base de datos
 $pps = $con->getConexion()->prepare("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'");
@@ -65,6 +66,4 @@ if (isset($_GET['eliminar']) && isset($_GET['tabla']) && isset($_GET['id'])) {
         echo "<p>No se encontró el registro para eliminar.</p>";
     }
 }
-
-
 ?>
