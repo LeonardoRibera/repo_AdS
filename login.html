@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <form action="login.php" method="POST"> <!-- Asegúrate de que el archivo PHP sea el correcto -->
+        <div class="login-container">
+            <div class="login-box">
+                <div class="avatar">
+                    <img src="avatar.png" alt="User Avatar">
+                </div>
+                <h2>Login</h2>
+
+                <div class="input-group">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" name="usuario" required placeholder="ejemplo@gmail.com">
+                </div>
+                <div class="input-group">
+                    <label for="contraseña">Contraseña</label>
+                    <input type="password" id="contraseña" name="contraseña" required placeholder="ejemplo123">
+                </div>
+                <div class="options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Recuerdame</label>
+                    </div>
+                    <a href="#">¿Olvidaste la contraseña?</a>
+                </div>
+                <button type="submit" class="btn">LOGIN</button> <div class="register-link">
+                <a href="register.html">¿No tienes cuenta? Regístrate</a>
+            </div>
+            </div>
+
+            <!-- Agregar el botón para registro -->
+           
+        </div>
+    </form>
+</body>
+</html>

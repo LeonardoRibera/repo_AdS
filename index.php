@@ -1,4 +1,15 @@
 <?php
+// Iniciar sesión
+session_start();
+
+// Verificar si el usuario ha iniciado sesión
+if (!isset($_SESSION['user_id'])) {
+    // Si el usuario no ha iniciado sesión, redirigirlo al login
+    header("Location: login.html");
+    exit; // Terminar la ejecución del script
+}
+
+// Si el usuario ha iniciado sesión, se incluye el archivo de consultas
 include("consultas.php");
 ?>
 
@@ -9,6 +20,7 @@ include("consultas.php");
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/encabezado.css">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Datos</title>
 </head>

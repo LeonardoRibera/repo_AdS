@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+<body>
+
+    <div class="register-container">
+        <div class="register-box">
+            <h2>Regístrate</h2>
+            <form action="register.php" method="POST">
+                <div class="input-group">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" name="usuario" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="contraseña">Contraseña</label>
+                    <input type="password" id="contraseña" name="contraseña" required>
+                </div>
+                <div class="input-group">
+                    <label for="confirmar_contraseña">Confirmar Contraseña</label>
+                    <input type="password" id="confirmar_contraseña" name="confirmar_contraseña" required>
+                </div>
+                <div class="options">
+                    <div class="terms">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">Acepto los términos y condiciones</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn">REGISTRAR</button>
+            </form>
+
+            <!-- Enlace de redirección a la página de login -->
+            <div class="login-link">
+                <a href="login.html">¿Ya tienes cuenta? Inicia sesión</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
