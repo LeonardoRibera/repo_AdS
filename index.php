@@ -1,4 +1,15 @@
 <?php
+// Iniciar sesión
+session_start();
+
+// Verificar si el usuario ha iniciado sesión
+if (!isset($_SESSION['user_id'])) {
+    // Si el usuario no ha iniciado sesión, redirigirlo al login
+    header("Location: login.html");
+    exit; // Terminar la ejecución del script
+}
+
+// Si el usuario ha iniciado sesión, se incluye el archivo de consultas
 include("consultas.php");
 ?>
 
