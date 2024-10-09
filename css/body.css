@@ -1,0 +1,25 @@
+.table_head {
+    background-color: rgb(148, 148, 148) !important;
+}
+.table_body {
+    background-color: rgba(148, 148, 148, 0.486) !important;
+}
+.table {
+    border: 0.5mm solid black !important;
+}
+.delete {
+    text-align: center;
+}
+.h2-tittle {
+    text-align: center !important;
+    font-size: 70px !important;
+    font-family: 'Kanit', sans-serif;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 27px;
+}
+.row, .h3 {
+    font-weight: bold;
+    font-family: 'Kanit', sans-serif;
+    color: black !important;
+}
