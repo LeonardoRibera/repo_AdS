@@ -12,10 +12,10 @@ $conn = $conexion->getConexion();
 // Verificar que el formulario ha sido enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Capturar los datos del formulario
-    $username = $_POST['usuario'];
-    $email = $_POST['email'];
-    $password = $_POST['contraseña'];
-    $confirm_password = $_POST['confirmar_contraseña'];
+    $username = $_POST['usuario'] ?? '';
+    $gmail = $_POST['gmail'] ?? '';
+    $password = $_POST['contraseña'] ?? '';
+    $confirm_password = $_POST['confirmar_contraseña'] ?? '';
 
     // Validar que las contraseñas coincidan
     if ($password !== $confirm_password) {
@@ -29,32 +29,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    // Verificar si el correo electrónico ya está registrado
+    $checkEmailSql = "SELECT COUNT(*) FROM usuarios WHERE gmail = :gmail";
+    $checkEmailStmt = $conn->prepare($checkEmailSql);
+    $checkEmailStmt->bindParam(':gmail', $gmail);
+
+    // Depuración: muestra el correo electrónico que se está verificando
+    echo "Verificando el correo: " . htmlspecialchars($gmail) . "<br>";
+
+    if ($checkEmailStmt->execute()) {
+        $count = $checkEmailStmt->fetchColumn();
+        if ($count > 0) {
+            echo "El correo electrónico ya está registrado.";
+            exit;
+        }
+    } else {
+        echo "Error al verificar el correo electrónico.";
+        exit;
+    }
+
     // Encriptar la contraseña para almacenarla de manera segura
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
+    // Depuración: muestra los datos que se insertarán
+    echo "Registrando usuario: $username, Gmail: $gmail, Contraseña: $hashed_password <br>";
+
     // Insertar los datos del usuario en la base de datos
-    if ($conn) {
-        $sql = "INSERT INTO usuarios (usuario, email, contraseña, created_at) 
-                VALUES (:usuario, :email, :contrasena, GETDATE())"; // Cambié :contraseña a :contrasena
-        $stmt = $conn->prepare($sql);
+    $sql = "INSERT INTO usuarios (usuario, gmail, contraseña, created_at) 
+            VALUES (:usuario, :gmail, :contrasena, GETDATE())"; // Usar GETDATE() para SQL Server
+    $stmt = $conn->prepare($sql);
 
-        // Vincular los parámetros
-        $stmt->bindParam(':usuario', $username);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':contrasena', $hashed_password); // Cambié :contraseña a :contrasena
+    // Vincular los parámetros
+    $stmt->bindParam(':usuario', $username);
+    $stmt->bindParam(':gmail', $gmail);
+    $stmt->bindParam(':contrasena', $hashed_password);
 
-        // Ejecutar la consulta
-        try {
-            if ($stmt->execute()) {
-                echo "Registro exitoso. Ahora puedes <a href='login.html'>iniciar sesión</a>.";
-            } else {
-                echo "Error al registrar el usuario.";
-            }
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+    // Ejecutar la consulta
+    try {
+        if ($stmt->execute()) {
+            header('Location: login.html');
+            exit();
+        } else {
+            echo "Error al registrar el usuario.";
         }
-    } else {
-        echo "Error al conectar con la base de datos.";
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
     }
+} else {
+    echo "Error al verificar el correo electrónico.";
+    exit;
 }
 ?>

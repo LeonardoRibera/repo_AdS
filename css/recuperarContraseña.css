@@ -40,6 +40,12 @@ h2 {
     color: #333;
 }
 
+p {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
 .input-group {
     margin-bottom: 15px;
     text-align: left;
@@ -59,31 +65,6 @@ h2 {
     font-size: 14px;
 }
 
-.options {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.remember-me {
-    display: flex;
-    align-items: center;
-}
-
-.remember-me input {
-    margin-right: 5px;
-}
-
-.options a {
-    color: #007bff;
-    font-size: 14px;
-    text-decoration: none;
-}
-
-.options a:hover {
-    text-decoration: underline;
-}
-
 .btn {
     width: 100%;
     padding: 10px;
@@ -99,7 +80,6 @@ h2 {
     background-color: #0056b3;
 }
 
-/* Nuevo estilo para el enlace de registro */
 .register-link {
     margin-top: 15px;
 }
@@ -113,10 +93,8 @@ h2 {
 .register-link a:hover {
     text-decoration: underline;
 }
-#user{
-width:75px ;
-height: 75px;
-}
-#password{
-    border: 2px solid red;
+
+#user {
+    width: 75px;
+    height: 75px;
 }
