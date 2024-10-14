@@ -16,10 +16,58 @@
     font-family: 'Kanit', sans-serif;
     color: black;
     font-weight: bold;
-    margin-bottom: 27px;
 }
 .row, .h3 {
     font-weight: bold;
     font-family: 'Kanit', sans-serif;
     color: black !important;
+}
+
+/* Estilos para el modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+}
+
+.modal-content {
+    background-color: white;
+    margin: 8% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Ancho del modal */
+}
+
+/* Botón de cierre del modal */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    width: 20px;
+    margin-left: 97%;
+    text-align: center;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+#abrirModal{
+    border-color: antiquewhite;
+    background-color: rgb(188, 27, 27) !important;
+    margin-left: 75% !important;
+    width: 200px !important;
+    margin-bottom: 20px;
+}
+#abrirModal:hover{
+    border-color: antiquewhite;
+    background-color: rgb(161, 23, 23) !important;
 }
