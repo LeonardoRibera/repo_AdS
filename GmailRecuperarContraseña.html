@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/Gmail.css">
+    <script>
+        // Función para mostrar el alert si hay un error
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('error')) {
+                alert('Usuario o contraseña incorrectos.');
+            }
+        };
+
+        function showModal() {
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+    </script>
+</head>
+<body>
+    <form action="login.php" method="POST"> 
+        <div class="login-container">
+            <div class="login-box">
+                <div class="avatar">
+                    <img src="Iconos/user.png" alt="User Avatar" id="user">
+                </div>
+                <h2>Login</h2>
+
+                <div class="error-message"></div>
+
+                <div class="input-group">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" name="usuario" required placeholder="ejemplo@gmail.com">
+                </div>
+
+                <div class="input-group">
+                    <label for="contraseña">Contraseña</label>
+                    <input type="password" id="contraseña" name="contraseña" required placeholder="ejemplo123">
+                </div>
+
+                <div class="options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Recuerdame</label>
+                    </div>
+                    <a href="#" onclick="showModal()">¿Olvidaste la contraseña?</a>
+                </div>
+                
+                <button type="submit" class="btn">LOGIN</button>
+                <div class="register-link">
+                    <a href="register.html">¿No tienes cuenta? Regístrate</a>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Modal para recuperar contraseña -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Recuperar Contraseña</h2>
+        <form action="Recuperacioncontra.php" method="POST"> <!-- Cambiado -->
+            <div class="input-group">
+                <label for="email">Ingresa tu correo electrónico</label>
+                <input type="email" id="email" name="email" placeholder="ejemplo@gmail.com" required>
+            </div>
+            <button type="submit" class="btn">Enviar</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

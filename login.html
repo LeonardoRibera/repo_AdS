@@ -5,38 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/login.css">
+<script>
+    // Función para mostrar el alert si hay un error
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            alert('Usuario o contraseña incorrectos.');
+        }
+    };
+</script>
 </head>
 <body>
-    <form action="login.php" method="POST"> <!-- Asegúrate de que el archivo PHP sea el correcto -->
+    <form action="login.php" method="POST"> 
         <div class="login-container">
             <div class="login-box">
                 <div class="avatar">
-                    <img src="avatar.png" alt="User Avatar">
+                    <img src="Iconos/user.png" alt="User Avatar" id="user">
                 </div>
                 <h2>Login</h2>
 
+                <div class="error-message">
+                     
+                </div>
+
                 <div class="input-group">
                     <label for="usuario">Usuario</label>
-                    <input type="text" id="usuario" name="usuario" required placeholder="ejemplo@gmail.com">
+                    <input type="text" id="usuario" name="usuario" required placeholder="ejemplo@gmail.com"
+                           class="?php echo !empty($login_error) ? 'error-input' : ''; ?>">
                 </div>
+
                 <div class="input-group">
                     <label for="contraseña">Contraseña</label>
-                    <input type="password" id="contraseña" name="contraseña" required placeholder="ejemplo123">
+                    <input type="password" id="contraseña" name="contraseña" required placeholder="ejemplo123"
+                           class="?php echo !empty($login_error) ? 'error-input' : ''; ?>">
                 </div>
+
                 <div class="options">
                     <div class="remember-me">
                         <input type="checkbox" id="remember" name="remember">
                         <label for="remember">Recuerdame</label>
                     </div>
-                    <a href="#">¿Olvidaste la contraseña?</a>
+                    <a href="GmailRecuperarContraseña.html">¿Olvidaste la contraseña?</a>
                 </div>
-                <button type="submit" class="btn">LOGIN</button> <div class="register-link">
-                <a href="register.html">¿No tienes cuenta? Regístrate</a>
+                
+                <button type="submit" class="btn">LOGIN</button>
+                <div class="register-link">
+                    <a href="register.html">¿No tienes cuenta? Regístrate</a>
+                </div>
             </div>
-            </div>
-
-            <!-- Agregar el botón para registro -->
-           
         </div>
     </form>
 </body>
