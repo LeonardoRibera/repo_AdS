@@ -1,10 +1,10 @@
 <?php
 define ("USUARIO","sa");
 
-define ("PASSWORD","123");
+define ("PASSWORD","1234");
 
 define ("DATABASE","Distribuidora");
 
-define ("SERVIDOR","DESKTOP-QB22C4J\SQLEXPRESS");
+define ("SERVIDOR","DESKTOP-RIVIFEH");
 
 ?>

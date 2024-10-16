@@ -19,13 +19,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validar que las contraseñas coincidan
     if ($password !== $confirm_password) {
-        echo "Las contraseñas no coinciden.";
+        echo "<script>
+                    window.location.href = 'register.html';
+                    alert('Las constraseñas no coinciden.');
+                    console.log('hola');
+              </script>";
         exit;
     }
 
     // Validar si se aceptaron los términos y condiciones
     if (!isset($_POST['terms'])) {
-        echo "Debes aceptar los términos y condiciones.";
+        echo "<script>
+                    window.location.href = 'register.html';
+                    alert('Debes hacer aceptar los terminos y condiciones.');
+                    console.log('hola');
+              </script>";
         exit;
     }
 
@@ -35,12 +43,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $checkEmailStmt->bindParam(':gmail', $gmail);
 
     // Depuración: muestra el correo electrónico que se está verificando
-    echo "Verificando el correo: " . htmlspecialchars($gmail) . "<br>";
-
+    $MensajeError = ""; // Inicializar variable
     if ($checkEmailStmt->execute()) {
         $count = $checkEmailStmt->fetchColumn();
         if ($count > 0) {
-            echo "El correo electrónico ya está registrado.";
+            $MensajeError = "Ya existe este correo";
+            echo "<script>
+                    window.location.href = 'register.html';
+                    michi('hola');
+                    console.log('hola');
+                </script>";
             exit;
         }
     } else {
@@ -52,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Depuración: muestra los datos que se insertarán
-    echo "Registrando usuario: $username, Gmail: $gmail, Contraseña: $hashed_password <br>";
+    echo "Registrando usuario: $username, gmail: $gmail, Contraseña: $hashed_password <br>";
 
     // Insertar los datos del usuario en la base de datos
     $sql = "INSERT INTO usuarios (usuario, gmail, contraseña, created_at) 

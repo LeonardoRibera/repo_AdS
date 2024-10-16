@@ -6,6 +6,12 @@
     <title>Registro</title>
     <link rel="stylesheet" href="css/register.css">
 </head>
+<script>
+    function michi(error){
+        Document.getElementById('error-gmail').innerText = error
+    }
+</script>
+
 <body>
 
     <div class="register-container">
@@ -19,6 +25,8 @@
                 <div class="input-group">
                     <label for="email">Gmail</label>
                     <input type="email" id="gmail" name="gmail" required>
+                    <!-- Cambiado de <a> a <div> para mostrar errores -->
+                    <div id="error-gmail" style="color: red;">error</div> <!-- Contenedor para mensajes de error -->
                 </div>
                 <div class="input-group">
                     <label for="contraseña">Contraseña</label>
