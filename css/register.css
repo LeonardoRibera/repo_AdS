@@ -6,7 +6,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #e6f0ff;
+    background-color: rgb(47, 116, 206);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,11 +20,12 @@ body {
 }
 
 .register-box {
-    background-color: #ffffff;
+    background-color: #e5e2e2aa;
     border-radius: 10px;
     padding: 40px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    border: 3px solid rgba(0, 0, 0, 0.914);
 }
 
 h2 {

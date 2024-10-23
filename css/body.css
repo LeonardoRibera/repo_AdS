@@ -2,7 +2,7 @@
     background-color: rgb(148, 148, 148) !important;
 }
 .table_body {
-    background-color: rgba(148, 148, 148, 0.486) !important;
+    background-color: rgba(207, 204, 204, 0.859) !important;
 }
 .table {
     border: 0.5mm solid black !important;
@@ -14,7 +14,7 @@
     text-align: center !important;
     font-size: 70px !important;
     font-family: 'Kanit', sans-serif;
-    color: black;
+    color: rgb(194, 142, 10);
     font-weight: bold;
 }
 .row, .h3 {
@@ -34,7 +34,9 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
 }
-
+body{
+    background-color:#000000 ;
+}
 .modal-content {
     background-color: white;
     margin: 8% auto;
@@ -61,13 +63,22 @@
     cursor: pointer;
 }
 #abrirModal{
-    border-color: antiquewhite;
+    border-color: rgb(192, 11, 11);
     background-color: rgb(188, 27, 27) !important;
     margin-left: 75% !important;
     width: 200px !important;
     margin-bottom: 20px;
 }
 #abrirModal:hover{
-    border-color: antiquewhite;
+    border-color: rgb(150, 6, 6);
     background-color: rgb(161, 23, 23) !important;
+}
+p 
+{
+    color: rgb(185, 138, 18);
+
+}
+.custom-color
+{
+    background-color: rgb(118, 10, 10) !important;
 }

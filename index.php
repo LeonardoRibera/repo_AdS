@@ -152,7 +152,7 @@ if (isset($_GET['tabla'])) {
         // Enlaces numéricos para las páginas
         for ($p = 1; $p <= $totalPaginas; $p++) {
             if ($p == $paginaActual) {
-                echo "<li class='page-item active'><a class='page-link' href='#'>$p</a></li>";
+                echo "<li class='page-item active'><a class='page-link custom-color' href='#'>$p</a></li>";
             } else {
                 echo "<li class='page-item'><a class='page-link' href='?tabla=$nombreTabla&pagina=$p'>$p</a></li>";
             }
