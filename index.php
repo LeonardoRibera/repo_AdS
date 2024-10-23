@@ -41,7 +41,7 @@ include("consultas.php");
                 <?php endfor; ?>
             </div>
         </div>
-        <div ><button id="LogOut" class="logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button></div>
+        <div ><button id="LogOut" class="LogOut" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button></div>
     </div>
 </nav>
 
