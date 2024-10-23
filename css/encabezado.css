@@ -47,3 +47,16 @@ html, body {
 * {
     box-sizing: border-box; /* Incluye padding y border en el ancho del elemento */
 }
+#LogOut{
+    width: 50px; /* Ancho */
+    height: 50px; /* Alto igual al ancho para que sea un círculo */
+    border-radius: 50%; /* Hace que el botón sea redondo */
+    border: none; /* Elimina el borde */
+    background-color: #921600; /* Color de fondo */
+    color: white; /* Color del texto */
+    font-size: 16px; /* Tamaño de la fuente */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+}
+#LogOut:hover {
+    background-color: #942714; /* Color de fondo */
+}

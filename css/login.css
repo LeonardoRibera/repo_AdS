@@ -121,3 +121,7 @@ height: 75px;
 #password{
     border: 2px solid red;
 }
+#error-user {
+    color: red;
+    display: none ;
+}

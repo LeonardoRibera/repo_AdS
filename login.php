@@ -26,10 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit;
             } else {
                 // Redirigir a login.php con un mensaje de alerta
-                echo "<script>
-                        alert('Usuario o contraseña incorrectos.');
-                        window.location.href = 'login.html';
-                      </script>";
+                header("Location: login.html?error=error-usuario");
                 exit;
             }
         }

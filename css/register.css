@@ -97,3 +97,8 @@ h2 {
 .login-link a:hover {
     text-decoration: underline;
 }
+#error-gmail, #error-contraseñas {
+    color: red;
+    display: none ;
+}
+  

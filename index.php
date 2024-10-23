@@ -22,6 +22,7 @@ include("consultas.php");
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/encabezado.css">
     <link rel="stylesheet" href="css/body.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Datos</title>
 </head>
@@ -29,9 +30,6 @@ include("consultas.php");
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand navbar-tittle" href="#">Gestión de Datos</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
             <div class="navbar-nav d-flex justify-content-center">
                 <a class="nav-item nav-link active text-center" href="?">Home</a>
@@ -43,10 +41,15 @@ include("consultas.php");
                 <?php endfor; ?>
             </div>
         </div>
+        <div ><button id="LogOut" class="logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button></div>
     </div>
 </nav>
 
 <script>
+    function logout() {
+        window.location.href = 'logout.php'; // Redirige a logout.php
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         // Obtener el modal
         var modal = document.getElementById("modalFormulario");
