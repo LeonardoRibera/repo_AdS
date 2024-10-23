@@ -7,9 +7,22 @@
     <link rel="stylesheet" href="css/register.css">
 </head>
 <script>
-    function michi(error){
-        Document.getElementById('error-gmail').innerText = error
-    }
+     document.addEventListener('DOMContentLoaded', function () {
+            // Función para obtener parámetros de la URL
+            function getParameterByName(name) {
+                let url = new URL(window.location.href);
+                return url.searchParams.get(name);
+            }
+
+            // Chequea si hay un parámetro de error
+            const error = getParameterByName('error');
+            if (error === 'error-email') {
+                // Muestra el mensaje de error si el correo ya existe
+                document.getElementById('error-gmail').style.display = 'block';
+            } else if( error === 'contraseñas') {
+                document.getElementById('error-contraseñas').style.display = 'block';
+            }
+        });
 </script>
 
 <body>
@@ -26,7 +39,7 @@
                     <label for="email">Gmail</label>
                     <input type="email" id="gmail" name="gmail" required>
                     <!-- Cambiado de <a> a <div> para mostrar errores -->
-                    <div id="error-gmail" style="color: red;">error</div> <!-- Contenedor para mensajes de error -->
+                    <div id="error-gmail">el correo ya existe</div> <!-- Contenedor para mensajes de error -->
                 </div>
                 <div class="input-group">
                     <label for="contraseña">Contraseña</label>
@@ -35,6 +48,7 @@
                 <div class="input-group">
                     <label for="confirmar_contraseña">Confirmar Contraseña</label>
                     <input type="password" id="confirmar_contraseña" name="confirmar_contraseña" required>
+                    <div id="error-contraseñas">las contraseñas no coinciden</div>
                 </div>
                 <div class="options">
                     <div class="terms">

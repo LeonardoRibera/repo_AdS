@@ -7,12 +7,26 @@
     <link rel="stylesheet" href="css/login.css">
 <script>
     // Función para mostrar el alert si hay un error
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('error')) {
-            alert('Usuario o contraseña incorrectos.');
-        }
-    };
+    // window.onload = function() {
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     if (urlParams.has('error')) {
+    //         alert('Usuario o contraseña incorrectos.');
+    //     }
+    // };
+    document.addEventListener('DOMContentLoaded', function () {
+            // Función para obtener parámetros de la URL
+            function getParameterByName(name) {
+                let url = new URL(window.location.href);
+                return url.searchParams.get(name);
+            }
+
+            // Chequea si hay un parámetro de error
+            const error = getParameterByName('error');
+            if (error === 'error-usuario') {
+                // Muestra el mensaje de error si el correo ya existe
+                document.getElementById('error-user').style.display = 'block';
+            }
+        });
 </script>
 </head>
 <body>
@@ -24,9 +38,7 @@
                 </div>
                 <h2>Login</h2>
 
-                <div class="error-message">
-                     
-                </div>
+                <div id="error-user">Usuario o contraseña incorrectos.</div> 
 
                 <div class="input-group">
                     <label for="usuario">Usuario</label>

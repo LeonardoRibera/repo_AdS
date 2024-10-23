@@ -19,21 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validar que las contraseñas coincidan
     if ($password !== $confirm_password) {
-        echo "<script>
-                    window.location.href = 'register.html';
-                    alert('Las constraseñas no coinciden.');
-                    console.log('hola');
-              </script>";
+        header("Location: register.html?error=contraseñas");
         exit;
     }
 
     // Validar si se aceptaron los términos y condiciones
     if (!isset($_POST['terms'])) {
-        echo "<script>
-                    window.location.href = 'register.html';
-                    alert('Debes hacer aceptar los terminos y condiciones.');
-                    console.log('hola');
-              </script>";
         exit;
     }
 
@@ -47,12 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($checkEmailStmt->execute()) {
         $count = $checkEmailStmt->fetchColumn();
         if ($count > 0) {
-            $MensajeError = "Ya existe este correo";
-            echo "<script>
-                    window.location.href = 'register.html';
-                    michi('hola');
-                    console.log('hola');
-                </script>";
+            header("Location: register.html?error=error-email");
             exit;
         }
     } else {
