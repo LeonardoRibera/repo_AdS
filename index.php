@@ -307,6 +307,7 @@ if (isset($_GET['tabla'])) {
         // Primera mitad de los inputs (columna izquierda)
         echo "<div class='col-md-6'>"; // Primera columna
         for ($m = 1; $m < $mitad; $m++) {
+            
             $columna = array_keys($datosTabla[0])[$m];
             echo "<input type='hidden' name='columnas[]' value='$columna'>";
             echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
@@ -315,16 +316,62 @@ if (isset($_GET['tabla'])) {
             echo "</div>";
         }
         echo "</div>"; // Cerrar la primera columna
-
+        
         // Segunda mitad de los inputs (columna derecha)
         echo "<div class='col-md-6'>"; // Segunda columna
-        for ($n = $mitad; $n < $totalColumnas; $n++) {
-            $columna = array_keys($datosTabla[0])[$n];
-            echo "<input type='hidden' name='columnas[]' value='$columna'>";
-            echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
-            echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
-            echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
-            echo "</div>";
+        
+        if ($nombreTabla == "Productos"){
+            for ($n = $mitad; $n < $totalColumnas; $n++) {
+                $columna = array_keys($datosTabla[0])[$n];
+                if ($columna == "estado"){
+
+                    $estadoActual = $datosTabla[0][$columna]; // Obtiene el estado actual de la primera fila de $datosTabla
+                    echo "<div class='mb-3'>";
+                    echo "<label for='opciones' class='form-label'>estado</label>
+                          <select id='opciones' name='opciones' class='form-select'>";
+                    echo "<option value='En stock' " . ($estadoActual == 'En stock' ? 'selected' : '') . ">En stock</option>";
+                    echo "<option value='En espera' " . ($estadoActual == 'En espera' ? 'selected' : '') . ">En espera</option>";
+                    echo "</select>";
+                    echo "</div>";;
+                } else {
+                    echo "<input type='hidden' name='columnas[]' value='$columna'>";
+                    echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
+                    echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
+                    echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+                    echo "</div>";
+                }
+            }
+        } else if ($nombreTabla == "Movimientos"){
+            for ($n = $mitad; $n < $totalColumnas; $n++){
+                $columna = array_keys($datosTabla[0])[$n];
+                if ($columna == "estado_transaccion"){
+                    $estadoActual = $datosTabla[0][$columna]; // Obtiene el estado actual de la primera fila de $datosTabla
+                    echo "<div class='mb-3'>";
+                    echo "<label for='opciones' class='form-label'>estado_transaccion</label>
+                          <select id='opciones' name='opciones' class='form-select'>";
+                    echo "<option value='Completado' " . ($estadoActual == 'Completado' ? 'selected' : '') . ">Completado</option>";
+                    echo "<option value='Pendiente' " . ($estadoActual == 'Pendiente' ? 'selected' : '') . ">Pendiente</option>";
+                    echo "</select>";
+                    echo "</div>";;
+                } else {
+                    echo "<input type='hidden' name='columnas[]' value='$columna'>";
+                    echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
+                    echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
+                    echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+                    echo "</div>";
+                }
+            }
+        } 
+        
+        else {
+            for ($n = $mitad; $n < $totalColumnas; $n++) {
+                $columna = array_keys($datosTabla[0])[$n];
+                echo "<input type='hidden' name='columnas[]' value='$columna'>";
+                echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
+                echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
+                echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+                echo "</div>";
+            }
         }
         echo "</div>"; // Cerrar la segunda columna
 

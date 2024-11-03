@@ -13,15 +13,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tabla'])) {
 
     // Inicializar un arreglo para los valores
     $valores = [];
+    $finalColumnas = [];
+
     foreach ($columnas as $columna) {
         if (isset($_POST[$columna])) {
-            $valores[] = $_POST[$columna]; // Asigna todos los valores
+            $valores[] = $_POST[$columna]; // Asigna todos los valores de los inputs normales
+            $finalColumnas[] = $columna;
         }
     }
 
-    // Preparar la consulta de inserción
+    // Verificar si el campo 'estado' (opciones) existe y agregarlo
+    if (isset($_POST['opciones'])) {
+        $valores[] = $_POST['opciones'];
+
+        switch ($_POST['opciones']) {
+            case 'En stock':
+            case 'En espera':
+                $finalColumnas[] = 'estado';
+                break;
+            
+            case 'Pendiente':
+            case 'Completada':
+                $finalColumnas[] = 'estado_transaccion';
+                break;
+    
+            default:
+                echo "<p>Error: Valor no reconocido en el campo de opciones.</p>";
+                break;
+        }
+    }
+
+    // Preparar la consulta de inserción con los campos finales
     $placeholders = rtrim(str_repeat('?, ', count($valores)), ', ');
-    $sql = "INSERT INTO $nombreTabla (" . implode(',', $columnas) . ") VALUES ($placeholders)";
+    $sql = "INSERT INTO $nombreTabla (" . implode(',', $finalColumnas) . ") VALUES ($placeholders)";
     $pps = $con->getConexion()->prepare($sql);
     
     // Ejecutar la consulta con los valores
