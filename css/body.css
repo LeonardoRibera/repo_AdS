@@ -82,3 +82,18 @@ p
 {
     background-color: rgb(118, 10, 10) !important;
 }
+
+.boton-pag{
+    color:rgb(255, 255, 255);
+    border-color: rgb(194, 142, 10);
+    background-color: black;
+}
+.boton-pag:hover{
+    color:rgb(255, 255, 255);
+    border-color: rgb(194, 142, 10) !important;
+    background-color: rgb(194, 142, 10);
+}
+.custom-color{
+    border-color: rgb(194, 142, 10) !important;
+    background-color: rgb(246, 172, 0) !important;
+}
