@@ -21,27 +21,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tabla'])) {
             $finalColumnas[] = $columna;
         }
     }
+    $arrayProductosQuery = $con->getConexion()->prepare("SELECT cod_prod, nombre FROM Productos");
+    $arrayProductosQuery->execute();
+    $arrayProductos = $arrayProductosQuery->fetchAll(PDO::FETCH_ASSOC);    
+    // Crear un array solo con los cod_prod para in_array
+    $codigosProductos = array_column($arrayProductos, 'cod_prod');  
 
-    // Verificar si el campo 'estado' (opciones) existe y agregarlo
-    if (isset($_POST['opciones'])) {
-        $valores[] = $_POST['opciones'];
-
-        switch ($_POST['opciones']) {
+    // Procesar la selección del formulario
+    if (isset($_POST['opciones_productos'])){
+        switch ($_POST['opciones_productos']){
+            case in_array($_POST['opciones_productos'], $codigosProductos):
+                $valores[] = $_POST['opciones_productos'];
+                $finalColumnas[] = 'cod_prod';
+                break;
+            }
+        }
+    if (isset($_POST['opciones_movimientos'])){
+        switch ($_POST['opciones_movimientos']){
+            case 'Salida':
+            case 'Entrada':
+                $valores[] = $_POST['opciones_movimientos'];
+                $finalColumnas[] = 'tipo_movimiento';
+                break;
+            }
+        }
+    if (isset($_POST['opciones_estados'])){
+        switch ($_POST['opciones_estados']) {
             case 'En stock':
             case 'En espera':
+                $valores[] = $_POST['opciones_estados'];
                 $finalColumnas[] = 'estado';
                 break;
-            
+            }
+        }
+    if (isset($_POST['opciones_movimiento'])){
+        switch ($_POST['opciones_movimiento']){
             case 'Pendiente':
-            case 'Completada':
+            case 'Completado':
+                $valores[] = $_POST['opciones_movimiento'];
                 $finalColumnas[] = 'estado_transaccion';
                 break;
-    
-            default:
-                echo "<p>Error: Valor no reconocido en el campo de opciones.</p>";
-                break;
+            }
         }
+    if (isset($_POST['opciones'])) {
+        $valores[] = $_POST['opciones'];
     }
+        
+echo "<pre>";
+print_r($finalColumnas);
+print_r($valores);
+echo "</pre>";
 
     // Preparar la consulta de inserción con los campos finales
     $placeholders = rtrim(str_repeat('?, ', count($valores)), ', ');
