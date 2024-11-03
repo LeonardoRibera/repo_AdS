@@ -3,7 +3,7 @@ define ("USUARIO","sa");
 
 define ("PASSWORD","1234");
 
-define ("DATABASE","Distribuidora");
+define ("DATABASE","MercadoMayorista");
 
-define ("SERVIDOR","DESKTOP-5AJKIL1\SQLEXPRESS");
+define ("SERVIDOR","DESKTOP-QNDHT7C\SA");
 ?>
