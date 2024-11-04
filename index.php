@@ -311,6 +311,18 @@ if (isset($_GET['tabla'])) {
         $productosQuery = $con->getConexion()->prepare("SELECT cod_prod, nombre FROM Productos");
         $productosQuery->execute();
         $productos = $productosQuery->fetchAll(PDO::FETCH_ASSOC);    
+        
+        $proveedoresQuery = $con->getConexion()->prepare("SELECT cod_prov, nombre FROM Proveedores");
+        $proveedoresQuery->execute();
+        $proveedores = $proveedoresQuery->fetchAll(PDO::FETCH_ASSOC);    
+        
+        $almacenesQuery = $con->getConexion()->prepare("SELECT cod_alm, nombre FROM Almacen");
+        $almacenesQuery->execute();
+        $almacenes = $almacenesQuery->fetchAll(PDO::FETCH_ASSOC);    
+        
+        $distribuidoraQuery = $con->getConexion()->prepare("SELECT cod_dist, nombre FROM Distribuidora");
+        $distribuidoraQuery->execute();
+        $distribuidoras = $distribuidoraQuery->fetchAll(PDO::FETCH_ASSOC);   
 
         if ($nombreTabla == "Movimientos") {
             for ($m = 1; $m < $mitad; $m++) {
@@ -331,7 +343,7 @@ if (isset($_GET['tabla'])) {
                         echo "<option value='$cod_prod'" . ($EstadoActual == $cod_prod ? 'selected' : '') . ">$nombre_produc</option>";
                     }
                     echo "</select></div>";
-                } else if($columna == "tipo_movimiento"){
+                } else if ($columna == "tipo_movimiento"){
                     $estadoActual = $datosTabla[0][$columna]; // Obtiene el estado actual de la primera fila de $datosTabla
                     echo "<div class='mb-3'>";
                     echo "<label for='opciones' class='form-label'>tipo_movimiento</label>
@@ -379,6 +391,50 @@ if (isset($_GET['tabla'])) {
                     echo "<option value='En espera' " . ($estadoActual == 'En espera' ? 'selected' : '') . ">En espera</option>";
                     echo "</select>";
                     echo "</div>";
+                } else if ($columna == "cod_prov") {
+                    //proveedor
+                    $EstadoActual = $datosTabla[0][$columna]; // Obtiene el valor actual de 'cod_prod'
+                    echo "<div class='mb-3'>";
+                    echo "<label for='opciones' class='form-label'>proveedor</label>
+                          <select id='opciones_proveedor' name='opciones_proveedor' class='form-select'>";
+                
+                    // Generar opciones del select
+                    foreach ($proveedores as $proveedor) {
+                        $cod_prov = $proveedor['cod_prov'];
+                        $nombre_proveedor = $proveedor['nombre'];
+                        echo "<option value='$cod_prov'" . ($EstadoActual == $cod_prov ? 'selected' : '') . ">$nombre_proveedor</option>";
+                    }
+                    echo "</select></div>";
+                } else if ($columna == "cod_alm") {
+                    //almacen
+                    $EstadoActual = $datosTabla[0][$columna]; // Obtiene el valor actual de 'cod_prod'
+                    echo "<div class='mb-3'>";
+                    echo "<label for='opciones' class='form-label'>almacen</label>
+                          <select id='opciones_almacen' name='opciones_almacen' class='form-select'>";
+                
+                    // Generar opciones del select
+                    foreach ($almacenes as $almacen) {
+                        $cod_alm = $almacen['cod_alm'];
+                        $nombre_almacen = $almacen['nombre'];
+                        echo "<option value='$cod_alm'" . ($EstadoActual == $cod_alm ? 'selected' : '') . ">$nombre_almacen</option>";
+                    }
+
+                    echo "</select></div>";
+                } else if ($columna == "cod_dist") {
+                    //distribuidora
+                    $EstadoActual = $datosTabla[0][$columna]; // Obtiene el valor actual de 'cod_prod'
+                    echo "<div class='mb-3'>";
+                    echo "<label for='opciones' class='form-label'>distribuidora</label>
+                          <select id='opciones_distribuidora' name='opciones_distribuidora' class='form-select'>";
+
+                    // Generar opciones del select
+                    foreach ($distribuidoras as $distribuidora) {
+                        $cod_dist = $almadistribuidoracen['cod_dist'];
+                        $nombre_distribuidora = $distribuidora['nombre'];
+                        echo "<option value='$cod_dist'" . ($EstadoActual == $cod_dist ? 'selected' : '') . ">$nombre_distribuidora</option>";
+                    }
+                    
+                    echo "</select></div>";
                 } else {
                     echo "<input type='hidden' name='columnas[]' value='$columna'>";
                     echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
@@ -388,7 +444,7 @@ if (isset($_GET['tabla'])) {
                 }
             }
         } 
-        if ($nombreTabla == "Movimientos"){
+        else if ($nombreTabla == "Movimientos"){
             for ($n = $mitad; $n < $totalColumnas; $n++){
                 $columna = array_keys($datosTabla[0])[$n];
                 if ($columna == "estado_transaccion"){
