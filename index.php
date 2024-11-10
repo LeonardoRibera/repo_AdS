@@ -179,87 +179,79 @@ if (isset($_GET['tabla'])) {
             if ($nombreTabla == "Productos"){
                 for ($k = 0; $k < count($datosTabla[$j]); $k++) {
                     // agregar nombres proveedores
-                    if ($k==6){
-                        $col_nom_provQuery = $con->getConexion()->prepare("SELECT cod_prod FROM Productos WHERE cod_prov = ".$datosTabla[$j]['cod_prov']);
-                        $col_nom_provQuery->execute();
-                        $col_nom_prov = $col_nom_provQuery->fetchColumn();
-
-                        // Consultar el total de registros para la tabla seleccionada
-                        $nombre_proveedorQuery = $con->getConexion()->prepare("SELECT p.nombre FROM Proveedores p JOIN Productos m ON p.cod_prov = m.cod_prov WHERE m.cod_prov = ".$col_nom_prov);
-                        $nombre_proveedorQuery->execute();
-                        $nombre_proveedor = $nombre_proveedorQuery->fetchColumn();
-
-                        echo "<td class='table_body'>" . $nombre_proveedor . "</td>";
-
-                        $col_nom_almQuery = $con->getConexion()->prepare("SELECT cod_alm FROM Productos WHERE cod_prov = ".$datosTabla[$j]['cod_prov']);
-                        $col_nom_almQuery->execute();
-                        $col_nom_alm = $col_nom_almQuery->fetchColumn();
-
-                        // Consultar el total de registros para la tabla seleccionada
-                        $nombre_almacenQuery = $con->getConexion()->prepare("SELECT a.nombre FROM Almacen a JOIN Productos m ON a.cod_alm = m.cod_alm WHERE m.cod_alm = ".$col_nom_alm);
-                        $nombre_almacenQuery->execute();
-                        $nombre_almacen = $nombre_almacenQuery->fetchColumn();
-
-                        echo "<td class='table_body'>" . $nombre_almacen . "</td>";
-                        
-                        $col_nom_distQuery = $con->getConexion()->prepare("SELECT cod_dist FROM Productos WHERE cod_prov = ".$datosTabla[$j]['cod_prov']);
-                        $col_nom_distQuery->execute();
-                        $col_nom_dist = $col_nom_distQuery->fetchColumn();
-
-                        // Consultar el total de registros para la tabla seleccionada
-                        $nombre_distribuidoraQuery = $con->getConexion()->prepare("SELECT d.nombre FROM Distribuidora d JOIN Productos m ON d.cod_dist = m.cod_dist WHERE m.cod_dist = ".$col_nom_dist);
-                        $nombre_distribuidoraQuery->execute();
-                        $nombre_distribuidora = $nombre_distribuidoraQuery->fetchColumn();
-
-                        echo "<td class='table_body'>" . $nombre_distribuidora . "</td>";
-
-                    } else if($k<6) {
+                    if ($k == 6) {
+                        $cod_prod = $datosTabla[$j]['cod_prod'];
+                    
+                        // Consulta única para obtener nombres de proveedor, almacén y distribuidora en función de cod_prod
+                        $consulta = $con->getConexion()->prepare("
+                            SELECT 
+                                p.nombre AS nombre_proveedor,
+                                a.nombre AS nombre_almacen,
+                                d.nombre AS nombre_distribuidora
+                            FROM 
+                                Productos m
+                            LEFT JOIN Proveedores p ON m.cod_prov = p.cod_prov
+                            LEFT JOIN Almacen a ON m.cod_alm = a.cod_alm
+                            LEFT JOIN Distribuidora d ON m.cod_dist = d.cod_dist
+                            WHERE 
+                                m.cod_prod = :cod_prod
+                        ");
+                        $consulta->bindParam(':cod_prod', $cod_prod);
+                        $consulta->execute();
+                        $resultados = $consulta->fetch(PDO::FETCH_ASSOC);
+                    
+                        // Mostrar resultados en la tabla
+                        echo "<td class='table_body'>" . ($resultados['nombre_proveedor'] ?? 'Proveedor no encontrado') . "</td>";
+                        echo "<td class='table_body'>" . ($resultados['nombre_almacen'] ?? 'Almacén no encontrado') . "</td>";
+                        echo "<td class='table_body'>" . ($resultados['nombre_distribuidora'] ?? 'Distribuidora no encontrada') . "</td>";
+                    }
+                    else if($k<6) {
                         echo "<td class='table_body'>" . $datosTabla[$j][array_keys($datosTabla[0])[$k]] . "</td>";
                     }
                 }
             } else if ($nombreTabla == "Movimientos"){
                 for ($k = 0; $k < count($datosTabla[$j]); $k++){
-                    if ($k==1){
-                        $col_nom_prodQuery = $con->getConexion()->prepare("SELECT cod_prod FROM Movimientos WHERE cod_mov = ".$datosTabla[$j]['cod_mov']);
-                        $col_nom_prodQuery->execute();
-                        $col_nom_prod = $col_nom_prodQuery->fetchColumn();
-
-                        // Consultar el total de registros para la tabla seleccionada
-                        $nombre_productosQuery = $con->getConexion()->prepare("SELECT p.nombre FROM Productos p JOIN Movimientos m ON p.cod_prod = m.cod_prod WHERE m.cod_prod = ".$col_nom_prod);
+                    if ($k == 1) {
+                        // Consulta única para obtener el nombre del producto en función de cod_mov
+                        $nombre_productosQuery = $con->getConexion()->prepare("
+                            SELECT p.nombre 
+                            FROM Productos p
+                            JOIN Movimientos m ON p.cod_prod = m.cod_prod
+                            WHERE m.cod_mov = :cod_mov
+                        ");
+                        $nombre_productosQuery->bindParam(':cod_mov', $datosTabla[$j]['cod_mov']);
                         $nombre_productosQuery->execute();
                         $nombre_productos = $nombre_productosQuery->fetchColumn();
-
-                        echo "<td class='table_body'>" . $nombre_productos . "</td>";
+                    
+                        // Mostrar el nombre del producto o un mensaje si no se encuentra
+                        echo "<td class='table_body'>" . ($nombre_productos ?? '---') . "</td>";
                     }
+                    
                     else {
                         echo "<td class='table_body'>" . $datosTabla[$j][array_keys($datosTabla[0])[$k]] . "</td>";
                     }
                 }
             } else if ($nombreTabla == "Pedidos"){
                 for ($k = 0; $k < count($datosTabla[$j]); $k++){
-                    if ($k==1){
-                        $col_nom_provQuery = $con->getConexion()->prepare("SELECT cod_prov FROM Pedidos WHERE cod_ped = ".$datosTabla[$j]['cod_ped']);
-                        $col_nom_provQuery->execute();
-                        $col_nom_prov = $col_nom_provQuery->fetchColumn();
-
-                        // Consultar el total de registros para la tabla seleccionada
-                        $nombre_proveedoresQuery = $con->getConexion()->prepare("SELECT p.nombre FROM Proveedores p JOIN Pedidos m ON p.cod_prov = m.cod_prov WHERE m.cod_prov = ".$col_nom_prov);
-                        $nombre_proveedoresQuery->execute();
-                        $nombre_proveedores = $nombre_proveedoresQuery->fetchColumn();
-
-                        echo "<td class='table_body'>" . $nombre_proveedores . "</td>";
-
-                        $col_nom_prodQuery = $con->getConexion()->prepare("SELECT cod_prod FROM Pedidos WHERE cod_ped = ".$datosTabla[$j]['cod_ped']);
-                        $col_nom_prodQuery->execute();
-                        $col_nom_prod = $col_nom_prodQuery->fetchColumn();
-
-                        // Consultar el total de registros para la tabla seleccionada
-                        $nombre_productosQuery = $con->getConexion()->prepare("SELECT p.nombre FROM Productos p JOIN Pedidos m ON p.cod_prod = m.cod_prod WHERE m.cod_prod = ".$col_nom_prod);
-                        $nombre_productosQuery->execute();
-                        $nombre_productos = $nombre_productosQuery->fetchColumn();
-
-                        echo "<td class='table_body'>" . $nombre_productos . "</td>";
-                    } else if ($k!=2) {
+                    if ($k == 1) {
+                        // Consulta única para obtener el nombre del proveedor y del producto en función de cod_ped
+                        $consulta = $con->getConexion()->prepare("
+                            SELECT prov.nombre AS nombre_proveedor, prod.nombre AS nombre_producto
+                            FROM Pedidos ped
+                            LEFT JOIN Proveedores prov ON ped.cod_prov = prov.cod_prov
+                            LEFT JOIN Productos prod ON ped.cod_prod = prod.cod_prod
+                            WHERE ped.cod_ped = :cod_ped
+                        ");
+                        $consulta->bindParam(':cod_ped', $datosTabla[$j]['cod_ped']);
+                        $consulta->execute();
+                        $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+                    
+                        // Mostrar el nombre del proveedor o un mensaje si no se encuentra
+                        echo "<td class='table_body'>" . ($resultado['nombre_proveedor'] ?? '---') . "</td>";
+                        // Mostrar el nombre del producto o un mensaje si no se encuentra
+                        echo "<td class='table_body'>" . ($resultado['nombre_producto'] ?? '---') . "</td>";
+                    }
+                     else if ($k!=2) {
                         echo "<td class='table_body'>" . $datosTabla[$j][array_keys($datosTabla[0])[$k]] . "</td>";
                     }
                 }
