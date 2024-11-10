@@ -84,6 +84,23 @@ include("consultas.php");
             }
         };
     });
+    function handleSelectChange() {
+        const select = document.getElementById('opciones_movimientos');
+        const selectedValue = select.value;
+
+        if (selectedValue == 'Entrada') {
+            // Acciones para 'Entrada'
+            document.getElementById('cal1').required = true;
+            document.getElementById('cal1').disabled = false;
+            document.getElementById('cal2').disabled = true;
+        } else if (selectedValue == 'Salida') {
+            // Acciones para 'Salida'
+            document.getElementById('cal2').required = true;
+            document.getElementById('cal2').disabled = false;
+            document.getElementById('cal1').disabled = true;
+        }
+    }
+
 </script>
 
 <div class="container mt-4">
@@ -111,7 +128,6 @@ if (isset($_GET['tabla'])) {
     $pps->bindParam(':regPorPagina', $regPorPagina, PDO::PARAM_INT);
     $pps->execute();
     $datosTabla = $pps->fetchAll(PDO::FETCH_ASSOC);
-
     // Mostrar el nombre de la tabla
     echo "<h2 class='h2-tittle'>$nombreTabla</h2> <button id='abrirModal' class='btn btn-primary'>Ingresar nueva columna</button>";
 
@@ -373,10 +389,27 @@ if (isset($_GET['tabla'])) {
                     $estadoActual = $datosTabla[0][$columna]; // Obtiene el estado actual de la primera fila de $datosTabla
                     echo "<div class='mb-3'>";
                     echo "<label for='opciones' class='form-label'>tipo_movimiento</label>
-                          <select id='opciones_movimientos' name='opciones_movimientos' class='form-select'>";
+                          <select id='opciones_movimientos' name='opciones_movimientos' class='form-select' onchange='handleSelectChange()'>";
                     echo "<option value='Salida' " . ($estadoActual == 'Salida' ? 'selected' : '') . ">Salida</option>";
                     echo "<option value='Entrada' " . ($estadoActual == 'Entrada' ? 'selected' : '') . ">Entrada</option>";
                     echo "</select>";
+                    echo "</div>";
+                } else {
+                    echo "<input type='hidden' name='columnas[]' value='$columna'>";
+                    echo "<div class='mb-3'>";
+                    echo "<label for='$columna' class='form-label'>$columna</label>";
+                    echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+                    echo "</div>";
+                }
+            }
+        } else if ($nombreTabla == 'Productos'){
+            for ($m = 1; $m < $mitad; $m++) {
+                $columna = array_keys($datosTabla[0])[$m];
+                if ($columna == 'fecha_pedido'){
+                    echo "<input type='hidden' name='columnas[]' value='$columna'>";
+                    echo "<div class='mb-3'>";
+                    echo "<label for='$columna' class='form-label'>$columna</label>";
+                    echo "<input type='date' class='form-control' id='$columna' name='$columna' placeholder='../../..' required>";
                     echo "</div>";
                 } else {
                     echo "<input type='hidden' name='columnas[]' value='$columna'>";
@@ -528,7 +561,21 @@ if (isset($_GET['tabla'])) {
                     echo "<option value='Completado' " . ($EstadoActual == 'Completado' ? 'selected' : '') . ">Completado</option>";
                     echo "</select>";
                     echo "</div>";
-                } else {
+                } else if($columna == "fecha_entrada"){
+                    echo "<input type='hidden' name='columnas[]' value='$columna'>";
+                    echo "<div class='mb-3'>";
+                    echo "<label for='$columna' class='form-label'>$columna</label>";
+                    echo "<input type='date' class='form-control' id='cal1' name='$columna' placeholder='../../..' required>";
+                    echo "</div>";
+                }
+                else if($columna == "fecha_salida"){
+                    echo "<input type='hidden' name='columnas[]' value='$columna'>";
+                    echo "<div class='mb-3'>";
+                    echo "<label for='$columna' class='form-label'>$columna</label>";
+                    echo "<input type='date' class='form-control' id='cal2' name='$columna' placeholder='../../..' disabled>";
+                    echo "</div>";
+                }
+                else {
                     echo "<input type='hidden' name='columnas[]' value='$columna'>";
                     echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
                     echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
