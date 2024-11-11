@@ -3,12 +3,12 @@
     cursor: default;
 }
 .navbar{
-    background-color: rgb(102, 15, 15) !important;
+    background-color: rgb(37, 68, 134) !important;
     width: 100%;
     overflow: hidden;
 }
 .nav-item{
-    background-color: rgb(188, 27, 27) !important;
+    background-color: rgb(24, 53, 115) !important;
     color: rgb(218, 180, 42) !important;
     margin: 2px;
     border: none;
@@ -18,14 +18,14 @@
     text-align: center; /* Centra el texto dentro de los botones */
 
     cursor: pointer;
-    box-shadow: 0 3px rgb(144, 70, 70);
+    box-shadow: 0 3px rgb(33, 79, 140);
 }
 
 /* animacion de boton */
-.nav-item:hover{background-color: rgb(161, 23, 23) !important;}
+.nav-item:hover{background-color: rgb(17, 41, 90) !important;}
 .nav-item:active {
-    background-color: rgb(161, 23, 23) !important;
-    box-shadow: 0 1px rgb(89, 43, 43);
+    background-color: rgb(17, 41, 90) !important;
+    box-shadow: 0 1px rgb(17, 41, 90);
     transform: translateY(4px);
 }
 
@@ -52,11 +52,11 @@ html, body {
     height: 50px; /* Alto igual al ancho para que sea un círculo */
     border-radius: 50%; /* Hace que el botón sea redondo */
     border: none; /* Elimina el borde */
-    background-color: #921600; /* Color de fondo */
+    background-color: rgb(24, 53, 115); /* Color de fondo */
     color: white; /* Color del texto */
     font-size: 16px; /* Tamaño de la fuente */
     cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
 }
 #LogOut:hover {
-    background-color: #942714; /* Color de fondo */
+    background-color: rgb(33, 60, 118); /* Color de fondo */
 }

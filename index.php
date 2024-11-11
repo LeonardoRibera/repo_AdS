@@ -266,7 +266,7 @@ if (isset($_GET['tabla'])) {
             // Obtener el primer campo como clave para eliminar
             $id = $datosTabla[$j][array_key_first($datosTabla[$j])]; // Obtener el primer campo de la fila
             echo "<td class='table_body delete'>
-                <a href='?tabla=$nombreTabla&eliminar=true&id=$id' class='btn btn-danger' onclick='return confirm(\"¿Estás seguro de que quieres eliminar este registro?\");'>Eliminar</a>
+                <a href='?tabla=$nombreTabla&eliminar=true&id=$id' id='eliminar' class='btn btn-danger' onclick='return confirm(\"¿Estás seguro de que quieres eliminar este registro?\");'>Eliminar</a>
             </td>";
             echo "</tr>";
         }
