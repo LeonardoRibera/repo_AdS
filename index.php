@@ -50,7 +50,7 @@ include("consultas.php");
         window.location.href = 'logout.php'; // Redirige a logout.php
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
+    window.addEventListener("load", function() {
         // Obtener el modal
         var modal = document.getElementById("modalFormulario");
 
@@ -109,7 +109,6 @@ include("consultas.php");
 $regPorPagina = 10; // Registros por página
 $paginaActual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 $offset = ($paginaActual - 1) * $regPorPagina;
-
 // Comprobar si se ha seleccionado una tabla
 if (isset($_GET['tabla'])) {
     $nombreTabla = $_GET['tabla'];
@@ -129,7 +128,7 @@ if (isset($_GET['tabla'])) {
     $pps->execute();
     $datosTabla = $pps->fetchAll(PDO::FETCH_ASSOC);
     // Mostrar el nombre de la tabla
-    echo "<h2 class='h2-tittle'>$nombreTabla</h2> <button id='abrirModal' class='btn btn-primary'>Ingresar nueva columna</button>";
+    echo "<h2 class='h2-tittle'>$nombreTabla</h2> <button id='abrirModal' class='btn btn-primary'>Ingresar nuevo registro</button>";
 
     if (count($datosTabla) > 0) {
         // Mostrar la tabla HTML con los datos
@@ -165,8 +164,18 @@ if (isset($_GET['tabla'])) {
                             echo "<th class='table_head'>" . array_keys($datosTabla[0])[$i] . "</th>";
                         break;
                 }
+            } else if($nombreTabla=="Compras" ){
+                switch(array_keys($datosTabla[0])[$i] ){
+                    case "cod_prod":
+                        echo "<th class='table_head'>" . "Producto" . "</th>";
+                        break;
+                    default:
+                            echo "<th class='table_head'>" . array_keys($datosTabla[0])[$i] . "</th>";
+                        break;
+                }
             } else {
                 echo "<th class='table_head'>" . array_keys($datosTabla[0])[$i] . "</th>";
+                
             }
         }
         echo "<th class='table_head'></th>"; // Columna para las acciones
@@ -252,6 +261,38 @@ if (isset($_GET['tabla'])) {
                         echo "<td class='table_body'>" . ($resultado['nombre_producto'] ?? '---') . "</td>";
                     }
                      else if ($k!=2) {
+                        echo "<td class='table_body'>" . $datosTabla[$j][array_keys($datosTabla[0])[$k]] . "</td>";
+                    }
+                }
+            } else if ($nombreTabla == "Compras"){
+                for ($k = 0; $k < count($datosTabla[$j]); $k++){
+                    if ($k == 0) {
+                        // Consulta para obtener el nombre del distribuidor en función de cod_dist
+                        $consulta = $con->getConexion()->prepare("
+                            SELECT nombre AS nombre_distribuidor
+                            FROM Distribuidora
+                            WHERE cod_dist = :cod_dist
+                        ");
+                        $consulta->bindParam(':cod_dist', $datosTabla[$j]['cod_dist']);
+                        $consulta->execute();
+                        $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+                        
+                        // Mostrar el nombre del distribuidor o un mensaje si no se encuentra
+                        echo "<td class='table_body'>" . ($resultado['nombre_distribuidor'] ?? '---') . "</td>";
+                    } else if ($k == 1) {
+                        // Consulta para obtener el nombre del producto en función de cod_prod
+                        $consulta = $con->getConexion()->prepare("
+                            SELECT nombre AS nombre_producto
+                            FROM Productos
+                            WHERE cod_prod = :cod_prod
+                        ");
+                        $consulta->bindParam(':cod_prod', $datosTabla[$j]['cod_prod']);
+                        $consulta->execute();
+                        $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+                        
+                        // Mostrar el nombre del producto o un mensaje si no se encuentra
+                        echo "<td class='table_body'>" . ($resultado['nombre_producto'] ?? '---') . "</td>";
+                    } else {
                         echo "<td class='table_body'>" . $datosTabla[$j][array_keys($datosTabla[0])[$k]] . "</td>";
                     }
                 }
@@ -407,6 +448,46 @@ if (isset($_GET['tabla'])) {
                     echo "<input type='hidden' name='columnas[]' value='$columna'>";
                     echo "<div class='mb-3'>";
                     echo "<label for='$columna' class='form-label'>$columna</label>";
+                    echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+                    echo "</div>";
+                }
+            }
+        } else if ($nombreTabla == 'Compras'){
+            for ($m = 0; $m < $mitad; $m++) {
+                $columna = array_keys($datosTabla[0])[$m];
+                if ($columna == "cod_dist") {
+                    //distribuidora
+                    $EstadoActual = $datosTabla[0][$columna]; // Obtiene el valor actual de 'cod_prod'
+                    echo "<div class='mb-3'>";
+                    echo "<label for='opciones' class='form-label'>distribuidora</label>
+                          <select id='opciones_distribuidora' name='opciones_distribuidora' class='form-select'>";
+
+                    // Generar opciones del select
+                    foreach ($distribuidoras as $distribuidora) {
+                        $cod_dist = $distribuidora['cod_dist'];
+                        $nombre_distribuidora = $distribuidora['nombre'];
+                        echo "<option value='$cod_dist'" . ($EstadoActual == $cod_dist ? 'selected' : '') . ">$nombre_distribuidora</option>";
+                    }
+                    
+                    echo "</select></div>";
+                }else if ($columna == "cod_prod") {
+                    $EstadoActual = $datosTabla[0][$columna]; // Obtiene el valor actual de 'cod_prod'
+                    echo "<div class='mb-3'>";
+                    echo "<label for='opciones' class='form-label'>producto</label>
+                          <select id='opciones_productos' name='opciones_productos' class='form-select'>";
+                
+                    // Generar opciones del select
+                    foreach ($productos as $producto) {
+                        $cod_prod = $producto['cod_prod'];
+                        $nombre_produc = $producto['nombre'];
+                        echo "<option value='$cod_prod'" . ($EstadoActual == $cod_prod ? 'selected' : '') . ">$nombre_produc</option>";
+                    }
+                    echo "</select></div>";
+                }else {
+                    $columna = array_keys($datosTabla[0])[$m];
+                    echo "<input type='hidden' name='columnas[]' value='$columna'>";
+                    echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
+                    echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
                     echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
                     echo "</div>";
                 }
@@ -595,14 +676,134 @@ if (isset($_GET['tabla'])) {
         echo "</form>";
         echo "</div></div>";
 
-    } else {
-        // Si no hay datos en la tabla
-        echo "<p>No hay datos en la tabla $nombreTabla.</p>";
-    }
-} else {
-    // Si no se seleccionó ninguna tabla
-    echo "<p>Por favor, selecciona una tabla para gestionar.</p>";
-}
+    } else if (isset($nombreTabla)) {
+        
+            // Configuración de paginación
+        $regPorPagina = 10; // Registros por página
+        $paginaActual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+        $offset = ($paginaActual - 1) * $regPorPagina;
+
+        // Obtiene los productos y los almacena en un array
+        $productosQuery = $con->getConexion()->prepare("SELECT cod_prod, nombre FROM Productos");
+        $productosQuery->execute();
+        $productos = $productosQuery->fetchAll(PDO::FETCH_ASSOC);    
+        
+        $proveedoresQuery = $con->getConexion()->prepare("SELECT cod_prov, nombre FROM Proveedores");
+        $proveedoresQuery->execute();
+        $proveedores = $proveedoresQuery->fetchAll(PDO::FETCH_ASSOC);    
+        
+        $almacenesQuery = $con->getConexion()->prepare("SELECT cod_alm, nombre FROM Almacen");
+        $almacenesQuery->execute();
+        $almacenes = $almacenesQuery->fetchAll(PDO::FETCH_ASSOC);    
+        
+        $distribuidoraQuery = $con->getConexion()->prepare("SELECT cod_dist, nombre FROM Distribuidora");
+        $distribuidoraQuery->execute();
+        $distribuidoras = $distribuidoraQuery->fetchAll(PDO::FETCH_ASSOC);   
+
+        // Preparar la consulta para obtener los nombres de columnas en SQL Server
+        $query = $con->getConexion()->prepare("
+            SELECT c.name 
+            FROM sys.columns c
+            INNER JOIN sys.tables t ON c.object_id = t.object_id
+            WHERE t.name = :nombreTabla
+        ");
+        $query->bindParam(':nombreTabla', $nombreTabla, PDO::PARAM_STR);
+        $query->execute();
+    
+        // Obtener los resultados como un array
+        $nombresColumnas = $query->fetchAll(PDO::FETCH_COLUMN);
+    
+        // Obtener el total de registros de la tabla para la paginación
+        $totalRegistrosQuery = $con->getConexion()->prepare("SELECT COUNT(*) FROM " . $nombreTabla);
+        $totalRegistrosQuery->execute();
+        $totalRegistros = $totalRegistrosQuery->fetchColumn();
+    
+        // Calcular el total de páginas
+        $totalPaginas = ceil($totalRegistros / $regPorPagina);
+    
+        // Consultar los datos de la tabla seleccionada con paginación
+        $pps = $con->getConexion()->prepare("SELECT * FROM " . $nombreTabla . " ORDER BY (SELECT NULL) OFFSET :offset ROWS FETCH NEXT :regPorPagina ROWS ONLY");
+        $pps->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $pps->bindParam(':regPorPagina', $regPorPagina, PDO::PARAM_INT);
+        $pps->execute();
+        $datosTabla = $pps->fetchAll(PDO::FETCH_ASSOC);
+    
+        // Determinar si hay datos en la tabla
+        $hayDatos = count($datosTabla) > 0;
+    
+        // Definir el número total de columnas y la mitad
+        $totalColumnas = count($nombresColumnas) ; // Número total de columnas según la tabla
+        $mitad = ceil($totalColumnas / 2); // Calcular la mitad de las columnas (redondeando hacia arriba si es impar)
+    
+        echo "<div id='modalFormulario' class='modal'>";
+        echo "<div class='modal-content col-md-6'><span class='close'>&times;</span>";
+        echo "<h3>Insertar nuevo registro</h3>";
+        echo "<form method='POST' action=''>";
+        echo "<div class='row'>";
+        echo "<div class='col-md-6'>";
+        // Primera columna de campos (hasta la mitad)
+        for ($n = 1; $n < $mitad; $n++) {
+            $columna = $nombresColumnas[$n];
+            $valor = $hayDatos && isset($datosTabla[0][$columna]) ? $datosTabla[0][$columna] : '';
+        
+            echo "<input type='hidden' name='columnas[]' value='$columna'>";
+            echo "<div class='mb-3'>";
+            echo "<label for='$columna' class='form-label'>$columna</label>";
+        
+            if ($nombreTabla == "Pedidos" && $columna == "cod_prov") {
+                $EstadoActual = ($hayDatos && isset($datosTabla[0][$columna])) ? $datosTabla[0][$columna] : '';
+                echo "<select id='opciones_proveedor' name='opciones_proveedor' class='form-select'>";
+            
+                foreach ($proveedores as $proveedor) {
+                    $cod_prov = $proveedor['cod_prov'];
+                    $nombre_proveedor = $proveedor['nombre'];
+                    echo "<option value='$cod_prov'" . ($EstadoActual == $cod_prov ? 'selected' : '') . ">$nombre_proveedor</option>";
+                }
+                echo "</select>";
+            } else {
+                echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valor' required>";
+            }
+
+            echo "</div>";
+        }
+
+        echo "</div><div class='col-md-6'>";
+        for ($n = $mitad; $n < $totalColumnas; $n++) {
+            $columna = $nombresColumnas[$n];
+            $valor = $hayDatos && isset($datosTabla[0][$columna]) ? $datosTabla[0][$columna] : '1';
+            echo "<input type='hidden' name='columnas[]' value='$columna'>";
+            echo "<div class='mb-3'>";
+            echo "<label for='$columna' class='form-label'>$columna</label>";
+        
+            if ($nombreTabla == "Pedidos" && $columna == "cod_prod") {
+                $EstadoActual = ($hayDatos && isset($datosTabla[0][$columna])) ? $datosTabla[0][$columna] : '1';
+                echo "<select id='opciones_productos' name='opciones_productos' class='form-select'>";
+            
+                foreach ($productos as $producto) {
+                    $cod_prod = $producto['cod_prod'];
+                    $nombre_produc = $producto['nombre'];
+                    echo "<option value='$cod_prod'" . ($EstadoActual == $cod_prod ? ' selected' : '') . ">$nombre_produc</option>";
+                }
+                echo "</select>";
+            } else {
+                echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valor' required>";
+            }
+            echo "</div>";
+        }
+
+        echo "</div>"; // Cerrar la segunda columna
+        echo "</div>"; // Cerrar la fila
+        echo "<button type='submit' class='btn btn-primary'>Insertar</button><br><br>";
+        echo "</form>";
+
+                echo "</div>"; // Cerrar el contenedor del modal
+                echo "</div>"; // Cerrar el contenedor modal
+            } else if (!isset($nombreTabla)){
+            // Si no se seleccionó ninguna tabla
+            echo "<p>Por favor, selecciona una tabla para gestionar.</p>";
+            }
+        }
+
     ?>
 </div>
 </body>
