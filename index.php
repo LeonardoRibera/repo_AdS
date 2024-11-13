@@ -448,7 +448,7 @@ include("consultas.php");
                         }
                     }
                 } else if ($nombreTabla == 'Compras') {
-                    for ($m = 0; $m < $mitad; $m++) {
+                    for ($m = 1; $m < $mitad; $m++) {
                         $columna = array_keys($datosTabla[0])[$m];
                         if ($columna == "cod_dist") {
                             //distribuidora
