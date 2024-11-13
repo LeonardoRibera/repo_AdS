@@ -168,6 +168,9 @@ include("consultas.php");
                         }
                     } else if ($nombreTabla == "Compras") {
                         switch (array_keys($datosTabla[0])[$i]) {
+                            case "cod_dist":
+                                echo "<th class='table_head'>" . "Distribuidora" . "</th>";
+                                break;
                             case "cod_prod":
                                 echo "<th class='table_head'>" . "Producto" . "</th>";
                                 break;
@@ -263,7 +266,7 @@ include("consultas.php");
                         }
                     } else if ($nombreTabla == "Compras") {
                         for ($k = 0; $k < count($datosTabla[$j]); $k++) {
-                            if ($k == 0) {
+                            if ($k == 1) {
                                 // Consulta para obtener el nombre del distribuidor en función de cod_dist
                                 $consulta = $con->getConexion()->prepare("
                             SELECT nombre AS nombre_distribuidor
@@ -276,7 +279,7 @@ include("consultas.php");
 
                                 // Mostrar el nombre del distribuidor o un mensaje si no se encuentra
                                 echo "<td class='table_body'>" . ($resultado['nombre_distribuidor'] ?? '---') . "</td>";
-                            } else if ($k == 1) {
+                            } else if ($k == 2) {
                                 // Consulta para obtener el nombre del producto en función de cod_prod
                                 $consulta = $con->getConexion()->prepare("
                             SELECT nombre AS nombre_producto
