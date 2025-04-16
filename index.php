@@ -36,7 +36,7 @@ include("consultas.php");
                 <div class="navbar-nav d-flex justify-content-center">
                     <a class="nav-item nav-link active text-center" href="?">Home</a>
                     <!-- Menú dinámico de tablas -->
-                    <?php for ($i = 0; $i < count($tablas) - 1; $i++): ?>
+                    <?php for ($i = 0; $i < count($tablas) - 11; $i++): ?>
                         <a class="nav-item nav-link text-center" href="?tabla=<?php echo $tablas[$i]['TABLE_NAME']; ?>">
                             <?php echo $tablas[$i]['TABLE_NAME']; ?>
                         </a>
