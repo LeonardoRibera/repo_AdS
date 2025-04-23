@@ -1,9 +1,11 @@
+/* Silvestre gay*/
 .table_head {
-    background-color: #696969 !important;
-    color: #f2f2f2 !important;
+    background-color: #e6e4dd !important;
+    color: #000000 !important;
 }
 .table_body {
-    background-color: #f2f2f2 !important;
+    background-color: #cbe1fa !important;
+    opacity: .92;
 }
 .table {
     border: 0.5mm solid black !important;
@@ -16,9 +18,8 @@
     text-align: center !important;
     font-size: 70px !important;
     font-family: 'Kanit', sans-serif;
-    color: rgb(255 203 116);
+    color: rgb(16, 46, 102);
     font-weight: bold;
-    text-shadow: 0 0 5px #000000;
 }
 .row, .h3 {
     font-weight: bold;
@@ -39,6 +40,7 @@
 }
 body{
     background-color:#e7e7e7 ;
+    background-image: url(../Iconos/fondo.jpeg);
 }
 .modal-content {
     background-color:rgb(37, 68, 134);
@@ -68,17 +70,18 @@ body{
     cursor: pointer;
 }
 #abrirModal{
-    border-color: rgb(192, 11, 11);
-    background-color: rgb(188, 27, 27) !important;
-    margin-left: 75% !important;
+    background-color: #e6e4dd !important;
+    color: #000000;
+    margin-left:0% !important;
     width: 200px !important;
     margin-bottom: 20px;
 }
 #abrirModal:hover,
 #eliminar:hover{
-    border-color: rgb(150, 6, 6);
-    background-color: rgb(161, 23, 23) !important;
-    box-shadow: 0 0 20px 2px rgb(161, 23, 23);
+    border-color: rgb(0, 0, 0);
+    color: white;
+    background-color: rgb(0, 0, 0) !important;
+    box-shadow: 0 0 20px 2px rgb(0, 0, 0);
 }
 p 
 {

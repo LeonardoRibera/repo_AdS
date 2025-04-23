@@ -1,5 +1,5 @@
 .navbar-tittle{
-    color: bisque !important;
+    color: rgb(255, 255, 255) !important;
     cursor: default;
 }
 .navbar{
@@ -9,7 +9,7 @@
 }
 .nav-item{
     background-color: rgb(24, 53, 115) !important;
-    color: rgb(218, 180, 42) !important;
+    color: rgb(255, 255, 255) !important;
     margin: 2px;
     border: none;
     border-radius: 6px;
