@@ -25,16 +25,16 @@ include("consultas.php");
     <link rel="stylesheet" href="css/body.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Datos</title>
+    <title>Gestor Mayorista</title>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand navbar-tittle" href="#">Gestión de Datos</a>
+            <a class="navbar-brand navbar-tittle" href="#">Gestor Mayorista</a>
             <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
                 <div class="navbar-nav d-flex justify-content-center">
-                    <a class="nav-item nav-link active text-center" href="?">Home</a>
+                    <a class="nav-item nav-link active text-center" href="?">Inicio</a>
                     <!-- Menú dinámico de tablas -->
                     <?php for ($i = 0; $i < count($tablas) - 11; $i++): ?>
                         <a class="nav-item nav-link text-center" href="?tabla=<?php echo $tablas[$i]['TABLE_NAME']; ?>">
@@ -673,6 +673,7 @@ include("consultas.php");
                 echo "<p>Por favor, selecciona una tabla para gestionar.</p>";
             }
         } else {
+            echo "<p>Bienvenido al Gestor de Base de Datos. </p>";
             echo "<p>Por favor, selecciona una tabla para gestionar.</p>";
         }
         ?>

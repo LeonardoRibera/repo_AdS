@@ -6,7 +6,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: rgb(47, 116, 206);
+    background-color: #3d5dad;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,12 +20,11 @@ body {
 }
 
 .register-box {
-    background-color: #e5e2e2aa;
+    background-color: #ececec;
     border-radius: 10px;
     padding: 40px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    border: 3px solid rgba(0, 0, 0, 0.914);
 }
 
 h2 {
@@ -71,7 +70,7 @@ h2 {
 .btn {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #2a3949;
     border: none;
     color: white;
     font-size: 16px;
@@ -80,7 +79,7 @@ h2 {
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: #27333f;
 }
 
 /* Enlace para iniciar sesión si ya tiene cuenta */
