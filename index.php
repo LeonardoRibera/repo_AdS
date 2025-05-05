@@ -37,6 +37,10 @@ include("consultas.php");
                     <a class="nav-item nav-link active text-center" href="?">Inicio</a>
                     <!-- Menú dinámico de tablas -->
                     <?php for ($i = 0; $i < count($tablas) - 11; $i++): ?>
+                        <?php
+                        $tablaActual = strtolower($tablas[$i]['TABLE_NAME']);
+                        if ($tablaActual === 'movimientos' || $tablaActual === 'empleados') continue;
+                        ?>
                         <a class="nav-item nav-link text-center" href="?tabla=<?php echo $tablas[$i]['TABLE_NAME']; ?>">
                             <?php echo $tablas[$i]['TABLE_NAME']; ?>
                         </a>
@@ -174,6 +178,12 @@ include("consultas.php");
                             case "cod_prod":
                                 echo "<th class='table_head'>" . "Producto" . "</th>";
                                 break;
+                            case "cod_cli":
+                                echo "<th class='table_head'>" . "DNI_Clientes" . "</th>";
+                                break;
+                            case "cod_emp":
+                                echo "<th class='table_head'>" . "Empleados" . "</th>";
+                                break;
                             default:
                                 echo "<th class='table_head'>" . array_keys($datosTabla[0])[$i] . "</th>";
                                 break;
@@ -292,6 +302,41 @@ include("consultas.php");
 
                                 // Mostrar el nombre del producto o un mensaje si no se encuentra
                                 echo "<td class='table_body'>" . ($resultado['nombre_producto'] ?? '---') . "</td>";
+                            } else if ($k == 4) {
+                                // Consulta para obtener el DNI del cliente en función de cod_cli
+                                $consulta = $con->getConexion()->prepare("
+                            SELECT DNI AS DNI_cliente
+                            FROM Clientes
+                            WHERE cod_cli = :cod_cli
+                        ");
+                                $consulta->bindParam(':cod_cli', $datosTabla[$j]['cod_cli']);
+                                $consulta->execute();
+                                $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+
+                                // Mostrar el nombre del cliente o un mensaje si no se encuentra
+                                echo "<td class='table_body'>" . ($resultado['DNI_cliente'] ?? '---') . "</td>";
+                            } else if ($k == 5) {
+                                // Consulta para obtener el nombre del empleado en función de cod_emp
+                                $consulta1 = $con->getConexion()->prepare("
+                            SELECT nombre AS nombre_empleado
+                            FROM Empleados
+                            WHERE cod_emp = :cod_emp
+                        ");
+                                $consulta2 = $con->getConexion()->prepare("
+                        SELECT apellido AS apellido_empleado
+                        FROM Empleados
+                        WHERE cod_emp = :cod_emp
+                        ");
+                                $consulta1->bindParam(':cod_emp', $datosTabla[$j]['cod_emp']);
+                                $consulta1->execute();
+                                $resultado1 = $consulta1->fetch(PDO::FETCH_ASSOC);
+
+                                $consulta2->bindParam(':cod_emp', $datosTabla[$j]['cod_emp']);
+                                $consulta2->execute();
+                                $resultado2 = $consulta2->fetch(PDO::FETCH_ASSOC);
+
+                                // Mostrar el nombre del Empleado o un mensaje si no se encuentra
+                                echo "<td class='table_body'>" . ($resultado1['nombre_empleado'] ?? '---') . ", " . ($resultado2['apellido_empleado'] ?? '---') . "</td>";
                             } else {
                                 echo "<td class='table_body'>" . $datosTabla[$j][array_keys($datosTabla[0])[$k]] . "</td>";
                             }
@@ -370,6 +415,14 @@ include("consultas.php");
                 $distribuidoraQuery = $con->getConexion()->prepare("SELECT cod_dist, nombre FROM Distribuidora");
                 $distribuidoraQuery->execute();
                 $distribuidoras = $distribuidoraQuery->fetchAll(PDO::FETCH_ASSOC);
+
+                $empleadoQuery = $con->getConexion()->prepare("SELECT cod_emp, nombre, apellido FROM Empleados");
+                $empleadoQuery->execute();
+                $empleados = $empleadoQuery->fetchAll(PDO::FETCH_ASSOC);
+
+                $clienteQuery = $con->getConexion()->prepare("SELECT cod_cli, DNI FROM Clientes");
+                $clienteQuery->execute();
+                $clientes = $clienteQuery->fetchAll(PDO::FETCH_ASSOC);
 
                 if ($nombreTabla == "Pedidos") {
                     for ($m = 1; $m < $mitad; $m++) {
@@ -646,6 +699,53 @@ include("consultas.php");
                             echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
                             echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
                             echo "</div>";
+                        }
+                    }
+                } else if ($nombreTabla == "Compras") {
+                    for ($n = $mitad; $n < $totalColumnas; $n++) {
+                        $columna = array_keys($datosTabla[0])[$n];
+                        if ($columna == "cod_cli") {
+                            //clientes
+                            $EstadoActual = $datosTabla[0][$columna]; // Obtiene el valor actual de 'cod_prod'
+                            echo "<div class='mb-3'>";
+                            echo "<label for='opciones' class='form-label'>DNI del cliente</label>
+                            <select id='opciones_clientes' name='opciones_clientes' class='form-select'>";
+
+                            // Generar opciones del select
+                            foreach ($clientes as $cliente) {
+                                $cod_cli = $cliente['cod_cli'];
+                                $DNI_cliente = $cliente['DNI'];
+                                echo "<option value='$cod_cli'" . ($EstadoActual == $cod_cli ? 'selected' : '') . ">$DNI_cliente</option>";
+                            }
+
+                            echo "</select></div>";
+                        } else if ($columna == "cod_emp") {
+                            $columna = array_keys($datosTabla[0])[$n];
+
+
+                            if ($columna == "cod_emp") {
+                                //empleados
+                                $EstadoActual = $datosTabla[0][$columna]; // Obtiene el valor actual de 'cod_prod'
+                                echo "<div class='mb-3'>";
+                                echo "<label for='opciones' class='form-label'>empleados</label>
+                            <select id='opciones_empleados' name='opciones_empleados' class='form-select'>";
+
+                                // Generar opciones del select
+                                foreach ($empleados as $empleado) {
+                                    $cod_emp = $empleado['cod_emp'];
+                                    $nombre_empleado = $empleado['nombre'];
+                                    $apellido_empleado = $empleado['apellido'];
+                                    echo "<option value='$cod_emp'" . ($EstadoActual == $cod_emp ? 'selected' : '') . ">$nombre_empleado, $apellido_empleado</option>";
+                                }
+
+                                echo "</select></div>";
+                            } else {
+                                echo "<input type='hidden' name='columnas[]' value='$columna'>";
+                                echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
+                                echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
+                                echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+                                echo "</div>";
+                            }
                         }
                     }
                 } else {

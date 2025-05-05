@@ -23,111 +23,138 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tabla'])) {
     }
     $arrayProductosQuery = $con->getConexion()->prepare("SELECT cod_prod, nombre FROM Productos");
     $arrayProductosQuery->execute();
-    $arrayProductos = $arrayProductosQuery->fetchAll(PDO::FETCH_ASSOC);    
+    $arrayProductos = $arrayProductosQuery->fetchAll(PDO::FETCH_ASSOC);
     // Crear un array solo con los cod_prod para in_array
-    $codigosProductos = array_column($arrayProductos, 'cod_prod');  
+    $codigosProductos = array_column($arrayProductos, 'cod_prod');
 
     $arrayProveedoresQuery = $con->getConexion()->prepare("SELECT cod_prov, nombre FROM Proveedores");
     $arrayProveedoresQuery->execute();
-    $arrayProveedores = $arrayProveedoresQuery->fetchAll(PDO::FETCH_ASSOC);    
-    // Crear un array solo con los cod_prod para in_array
-    $codigosProveedores = array_column($arrayProveedores, 'cod_prov');  
+    $arrayProveedores = $arrayProveedoresQuery->fetchAll(PDO::FETCH_ASSOC);
+    // Crear un array solo con los cod_prov para in_array
+    $codigosProveedores = array_column($arrayProveedores, 'cod_prov');
 
     $arrayAlmacenesQuery = $con->getConexion()->prepare("SELECT cod_alm, nombre FROM Almacen");
     $arrayAlmacenesQuery->execute();
-    $arrayAlmacenes = $arrayAlmacenesQuery->fetchAll(PDO::FETCH_ASSOC);    
-    // Crear un array solo con los cod_prod para in_array
-    $codigosAlmacenes = array_column($arrayAlmacenes, 'cod_alm');  
+    $arrayAlmacenes = $arrayAlmacenesQuery->fetchAll(PDO::FETCH_ASSOC);
+    // Crear un array solo con los cod_alm para in_array
+    $codigosAlmacenes = array_column($arrayAlmacenes, 'cod_alm');
 
     $arrayDistribuidorasQuery = $con->getConexion()->prepare("SELECT cod_dist, nombre FROM Distribuidora");
     $arrayDistribuidorasQuery->execute();
-    $arrayDistribuidoras = $arrayDistribuidorasQuery->fetchAll(PDO::FETCH_ASSOC);    
-    // Crear un array solo con los cod_prod para in_array
-    $codigosDistribuidoras = array_column($arrayDistribuidoras, 'cod_dist');  
-    
+    $arrayDistribuidoras = $arrayDistribuidorasQuery->fetchAll(PDO::FETCH_ASSOC);
+    // Crear un array solo con los cod_dist para in_array
+    $codigosDistribuidoras = array_column($arrayDistribuidoras, 'cod_dist');
+
+    $arrayClientesQuery = $con->getConexion()->prepare("SELECT cod_cli, DNI FROM Clientes");
+    $arrayClientesQuery->execute();
+    $arrayClientes = $arrayClientesQuery->fetchAll(PDO::FETCH_ASSOC);
+    // Crear un array solo con los cod_cli para in_array
+    $codigosClientes = array_column($arrayClientes, 'cod_cli');
+
+    $arrayEmpleadosQuery = $con->getConexion()->prepare("SELECT cod_emp, nombre, apellido FROM Empleados");
+    $arrayEmpleadosQuery->execute();
+    $arrayEmpleados = $arrayEmpleadosQuery->fetchAll(PDO::FETCH_ASSOC);
+    // Crear un array solo con los cod_emp para in_array
+    $codigosEmpleados = array_column($arrayEmpleados, 'cod_emp');
+
     // Procesar la selección del formulario
-    if (isset($_POST['opciones_productos'])){
-        switch ($_POST['opciones_productos']){
+    if (isset($_POST['opciones_productos'])) {
+        switch ($_POST['opciones_productos']) {
             case in_array($_POST['opciones_productos'], $codigosProductos):
                 $valores[] = $_POST['opciones_productos'];
                 $finalColumnas[] = 'cod_prod';
                 break;
-            }
         }
-    
-    if (isset($_POST['opciones_proveedor'])){
-        switch ($_POST['opciones_proveedor']){
+    }
+
+    if (isset($_POST['opciones_proveedor'])) {
+        switch ($_POST['opciones_proveedor']) {
             case in_array($_POST['opciones_proveedor'], $codigosProveedores):
                 $valores[] = $_POST['opciones_proveedor'];
                 $finalColumnas[] = 'cod_prov';
                 break;
-            }
         }
-    
-    if (isset($_POST['opciones_almacen'])){
-        switch ($_POST['opciones_almacen']){
+    }
+
+    if (isset($_POST['opciones_almacen'])) {
+        switch ($_POST['opciones_almacen']) {
             case in_array($_POST['opciones_almacen'], $codigosAlmacenes):
                 $valores[] = $_POST['opciones_almacen'];
                 $finalColumnas[] = 'cod_alm';
                 break;
-            }
         }
-    
-    if (isset($_POST['opciones_distribuidora'])){
-        switch ($_POST['opciones_distribuidora']){
+    }
+
+    if (isset($_POST['opciones_distribuidora'])) {
+        switch ($_POST['opciones_distribuidora']) {
             case in_array($_POST['opciones_distribuidora'], $codigosDistribuidoras):
                 $valores[] = $_POST['opciones_distribuidora'];
                 $finalColumnas[] = 'cod_dist';
                 break;
-            }
         }
-    
-    if (isset($_POST['opciones_movimientos'])){
-        switch ($_POST['opciones_movimientos']){
+    }
+    if (isset($_POST['opciones_clientes'])) {
+        switch ($_POST['opciones_clientes']) {
+            case in_array($_POST['opciones_clientes'], $codigosClientes):
+                $valores[] = $_POST['opciones_clientes'];
+                $finalColumnas[] = 'cod_cli';
+                break;
+        }
+    }
+    if (isset($_POST['opciones_empleados'])) {
+        switch ($_POST['opciones_empleados']) {
+            case in_array($_POST['opciones_empleados'], $codigosEmpleados):
+                $valores[] = $_POST['opciones_empleados'];
+                $finalColumnas[] = 'cod_emp';
+                break;
+        }
+    }
+    if (isset($_POST['opciones_movimientos'])) {
+        switch ($_POST['opciones_movimientos']) {
             case 'Salida':
             case 'Entrada':
                 $valores[] = $_POST['opciones_movimientos'];
                 $finalColumnas[] = 'tipo_movimiento';
                 break;
-            }
         }
-    if (isset($_POST['opciones_estados'])){
+    }
+    if (isset($_POST['opciones_estados'])) {
         switch ($_POST['opciones_estados']) {
             case 'En stock':
             case 'En espera':
                 $valores[] = $_POST['opciones_estados'];
                 $finalColumnas[] = 'estado';
                 break;
-            }
         }
-    if (isset($_POST['opciones_movimiento'])){
-        switch ($_POST['opciones_movimiento']){
+    }
+    if (isset($_POST['opciones_movimiento'])) {
+        switch ($_POST['opciones_movimiento']) {
             case 'Pendiente':
             case 'Completado':
                 $valores[] = $_POST['opciones_movimiento'];
                 $finalColumnas[] = 'estado_transaccion';
                 break;
-            }
         }
-    if (isset($_POST['opciones_estado_cliente'])){
-        switch ($_POST['opciones_estado_cliente']){
+    }
+    if (isset($_POST['opciones_estado_cliente'])) {
+        switch ($_POST['opciones_estado_cliente']) {
             case 'Activo':
             case 'Inactivo':
                 $valores[] = $_POST['opciones_estado_cliente'];
                 $finalColumnas[] = 'estado';
                 break;
-            }
         }
+    }
     if (isset($_POST['opciones'])) {
         $valores[] = $_POST['opciones'];
     }
-        
+
 
     // Preparar la consulta de inserción con los campos finales
     $placeholders = rtrim(str_repeat('?, ', count($valores)), ', ');
     $sql = "INSERT INTO $nombreTabla (" . implode(',', $finalColumnas) . ") VALUES ($placeholders)";
     $pps = $con->getConexion()->prepare($sql);
-    
+
     // Ejecutar la consulta con los valores
     try {
         $pps->execute($valores); // Usar el arreglo de valores
@@ -170,4 +197,3 @@ if (isset($_GET['eliminar']) && isset($_GET['tabla']) && isset($_GET['id'])) {
         echo "<p>No se encontró el registro para eliminar.</p>";
     }
 }
-?>
