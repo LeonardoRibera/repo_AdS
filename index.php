@@ -62,7 +62,6 @@ include("consultas.php");
 
             // Obtener el botón que abre el modal
             var btnAbrir = document.getElementById("abrirModal");
-
             // Verificar si el botón existe
             if (btnAbrir) {
                 // Abrir el modal cuando se hace clic en el botón
@@ -135,7 +134,6 @@ include("consultas.php");
             $datosTabla = $pps->fetchAll(PDO::FETCH_ASSOC);
             // Mostrar el nombre de la tabla
             echo "<h2 class='h2-tittle'>$nombreTabla</h2> <button id='abrirModal' class='btn btn-primary'>Ingresar nuevo registro</button>";
-
             if (count($datosTabla) > 0) {
                 // Mostrar la tabla HTML con los datos
                 echo "<table class='table table-bordered'>";
@@ -349,7 +347,7 @@ include("consultas.php");
 
                     // Obtener el primer campo como clave para eliminar
                     $id = $datosTabla[$j][array_key_first($datosTabla[$j])]; // Obtener el primer campo de la fila
-                    echo "<td class='table_body delete'>
+                    echo "<td class='table_body delete'><button id='abrirModal2' class='btn btn-primary'>modificar registro</button>
                 <a href='?tabla=$nombreTabla&eliminar=true&id=$id' id='eliminar' class='btn btn-danger' onclick='return confirm(\"¿Estás seguro de que quieres eliminar este registro?\");'>Eliminar</a>
             </td>";
                     echo "</tr>";
@@ -776,6 +774,7 @@ include("consultas.php");
             echo "<p>Bienvenido al Gestor de Base de Datos. </p>";
             echo "<p>Por favor, selecciona una tabla para gestionar.</p>";
         }
+        include("modificarTablas.php");
         ?>
     </div>
 </body>
