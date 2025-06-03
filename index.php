@@ -37,7 +37,7 @@ include("consultas.php");
                 <div class="navbar-nav d-flex justify-content-center">
                     <a class="nav-item nav-link active text-center" href="?">Inicio</a>
                     <!-- Menú dinámico de tablas -->
-                    <?php for ($i = 0; $i < count($tablas) - 14; $i++): ?>
+                    <?php for ($i = 0; $i < count($tablas) - 11; $i++): ?>
                         <?php
                         $tablaActual = strtolower($tablas[$i]['TABLE_NAME']);
                         if ($tablaActual === 'movimientos' || $tablaActual === 'empleados') continue;
@@ -104,7 +104,7 @@ include("consultas.php");
             echo "<p>Bienvenido al Gestor de Base de Datos. </p>";
             echo "<p>Por favor, selecciona una tabla para gestionar.</p>";
         }
-        include("modificarTablas.php");
+        include("includes/ModificarTablas.php");
         ?>
     </div>
 </body>
