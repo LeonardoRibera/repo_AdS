@@ -149,20 +149,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tabla'])) {
         $valores[] = $_POST['opciones'];
     }
 
+    if (isset($_POST['modificar'])) {
+        // Preparar la consulta de inserción con los campos finales
+        $placeholders = rtrim(str_repeat('?, ', count($valores)), ', ');
+        $sql = "UPDATE $nombreTabla SET (" . implode(',', $finalColumnas) . ") = ($placeholders)";
+        $pps = $con->getConexion()->prepare($sql);
 
-    // Preparar la consulta de inserción con los campos finales
-    $placeholders = rtrim(str_repeat('?, ', count($valores)), ', ');
-    $sql = "INSERT INTO $nombreTabla (" . implode(',', $finalColumnas) . ") VALUES ($placeholders)";
-    $pps = $con->getConexion()->prepare($sql);
+    } else {
+        // Preparar la consulta de inserción con los campos finales
+        $placeholders = rtrim(str_repeat('?, ', count($valores)), ', ');
+        $sql = "INSERT INTO $nombreTabla (" . implode(',', $finalColumnas) . ") VALUES ($placeholders)";
+        $pps = $con->getConexion()->prepare($sql);
 
-    // Ejecutar la consulta con los valores
-    try {
-        $pps->execute($valores); // Usar el arreglo de valores
-        echo "<p>Registro insertado correctamente.</p>";
-        header("Location: ?tabla=$nombreTabla"); // Redireccionar a la misma página para ver la tabla actualizada
-        exit;
-    } catch (PDOException $e) {
-        echo "<p>Error al insertar el registro: " . $e->getMessage() . "</p>";
+        // Ejecutar la consulta con los valores
+        try {
+            $pps->execute($valores); // Usar el arreglo de valores
+            echo "<p>Registro insertado correctamente.</p>";
+            header("Location: ?tabla=$nombreTabla"); // Redireccionar a la misma página para ver la tabla actualizada
+            exit;
+        } catch (PDOException $e) {
+            echo "<p>Error al insertar el registro: " . $e->getMessage() . "</p>";
+        }
     }
 }
 
@@ -195,5 +202,26 @@ if (isset($_GET['eliminar']) && isset($_GET['tabla']) && isset($_GET['id'])) {
         }
     } else {
         echo "<p>No se encontró el registro para eliminar.</p>";
+    }
+}
+
+if (isset($_GET['modificar']) && isset($_GET['tabla']) && isset($_GET['id'])) {
+    $nombreTabla = $_GET['tabla'];
+    $id = $_GET['id'];
+
+    // Obtener el nombre de la clave primaria
+    $pps = $con->getConexion()->prepare("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = ? AND CONSTRAINT_NAME = (SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE TABLE_NAME = ? AND CONSTRAINT_TYPE = 'PRIMARY KEY')");
+    $pps->execute([$nombreTabla, $nombreTabla]);
+    $clavePrimaria = $pps->fetchColumn();
+
+    // Obtener los datos del registro actual
+    $sql = "SELECT * FROM $nombreTabla WHERE $clavePrimaria = ?";
+    $pps = $con->getConexion()->prepare($sql);
+    $pps->execute([$id]);
+    $registro = $pps->fetch(PDO::FETCH_ASSOC);
+
+    if ($registro) {
+    } else {
+        echo "<p>No se encontró el registro para modificar.</p>";
     }
 }

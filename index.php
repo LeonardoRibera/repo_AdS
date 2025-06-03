@@ -79,6 +79,7 @@ include("consultas.php");
             $pps->bindParam(':regPorPagina', $regPorPagina, PDO::PARAM_INT);
             $pps->execute();
             $datosTabla = $pps->fetchAll(PDO::FETCH_ASSOC);
+            
 
             // Mostrar el nombre de la tabla / Boton de Ingresar nuevo registro
             echo "<h2 class='h2-tittle'>$nombreTabla</h2> <button id='abrirModal' class='btn btn-primary'>Ingresar nuevo registro</button>";
