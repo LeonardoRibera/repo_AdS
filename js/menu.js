@@ -71,3 +71,8 @@ function handleSelectChange() {
         document.getElementById('cal1').disabled = true;
     }
 }
+
+function pasarID(boton) {
+    const id = boton.getAttribute('data-id');
+    document.getElementById('inputID').value = id;
+}

@@ -7,6 +7,8 @@ echo "<div class='modal-content'><span class='close'>&times;</span>";
 echo "<form method='POST' action=''>";
 echo "<h3>Modificar registro</h3>";
 echo "<input type='hidden' name='tabla' value='$nombreTabla'>";
+echo "<input type='hidden' name='modificar' value='1'>";
+echo "<input type='hidden' name='id' id='inputID'>";
 
 // Abrir un contenedor con un grid para dividir en dos columnas
 echo "<div class='row'>";

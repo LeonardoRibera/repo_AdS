@@ -207,8 +207,7 @@ for ($j = 0; $j < count($datosTabla); $j++) {
     // Obtener el primer campo como clave para eliminar
     $id = $datosTabla[$j][array_key_first($datosTabla[$j])]; // Obtener el primer campo de la fila
     echo "<td class='table_body delete'>
-    <a href='?modificar=1&tabla=$nombreTabla&id=$id' class='btn btn-primary abrirModal2'>Modificar</a>
-    <button id='abrirModal2' class='btn btn-primary abrirModal2'> modificar registro</button>
+    <button id='abrirModal2' class='btn btn-primary abrirModal2' data-id='$id' onclick='pasarID(this)'> modificar registro</button>
     <a href='?tabla=$nombreTabla&eliminar=true&id=$id' id='eliminar' class='btn btn-danger' onclick='return confirm(\"¿Estás seguro de que quieres eliminar este registro?\");'>Eliminar</a>
     </td>";
     echo "</tr>";
