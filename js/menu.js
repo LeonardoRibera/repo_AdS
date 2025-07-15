@@ -8,7 +8,6 @@ window.addEventListener("load", function () {
     var modalModificar = document.getElementById("modalFormularioModificar");
     // Obtener el botón que abre el modal
     var btnAbrir = document.getElementById("abrirModal");
-    var btnAbrirModif = document.getElementsByClassName("abrirModal2");
 
     // Verificar si el botón existe
     if (btnAbrir) {
@@ -20,22 +19,9 @@ window.addEventListener("load", function () {
         console.error("El botón 'abrirModal' no se encontró.");
     }
 
-    if (btnAbrirModif) {
-        // Abrir el modal cuando se hace clic en el botón
-        btnAbrirModif.onclick = function () {
-            modalModificar.style.display = "block";
-        };
-    }
     // Obtener el botón de cerrar (la "X")
     var botonesCerrar = document.getElementsByClassName("close");
-    var botonesAbrirModif = document.getElementsByClassName("abrirModal2");
 
-    // abrir modal
-    for (var i = 0; i < botonesAbrirModif.length; i++) {
-        botonesAbrirModif[i].addEventListener("click", function () {
-            modalModificar.style.display = "block";
-        });
-    }
     // cerrar modal
     for (var i = 0; i < botonesCerrar.length; i++) {
         botonesCerrar[i].addEventListener("click", function () {
@@ -52,7 +38,7 @@ window.addEventListener("load", function () {
             modal.style.display = "none";
             modalModificar.style.display = "none";
         }
-    };
+    }; 
 });
 
 function handleSelectChange() {
@@ -72,7 +58,27 @@ function handleSelectChange() {
     }
 }
 
+
+window.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    if (id) {
+        document.getElementById("inputID").value = id;
+        document.getElementById("modalFormularioModificar").style.display = "block";
+    }
+});
+
+function obtenerFila(boton) {
+    const fila = boton.closest("tr"); // Busca la fila donde está el botón
+    const indice = fila.rowIndex; // Obtiene la posición (empezando desde 0 o 1)
+    console.log("Posición de la fila:", indice);
+
+    // Coloca la posición en el input oculto
+    document.getElementById("inputPosicion").value = indice;
+
+}
 function pasarID(boton) {
+    
     const id = boton.getAttribute('data-id');
     document.getElementById('inputID').value = id;
 }

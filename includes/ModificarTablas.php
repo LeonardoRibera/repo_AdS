@@ -1,15 +1,16 @@
 <?php
+$id = $_GET['pos'] ?? "no llego";
 
 echo "<div id='modalFormularioModificar' class='modal'>";
 echo "<div class='modal-content'><span class='close'>&times;</span>";
-
 // Mostrar el formulario para insertar datos
 echo "<form method='POST' action=''>";
 echo "<h3>Modificar registro</h3>";
 echo "<input type='hidden' name='tabla' value='$nombreTabla'>";
 echo "<input type='hidden' name='modificar' value='1'>";
 echo "<input type='hidden' name='id' id='inputID'>";
-
+echo "<input type='hidden' name='posicion' id='inputPosicion'>";
+echo "$id";
 // Abrir un contenedor con un grid para dividir en dos columnas
 echo "<div class='row'>";
 
@@ -21,27 +22,35 @@ $mitad = ceil($totalColumnas / 2);
 echo "<div class='col-md-6'>"; // Primera columna
 
 // Obtiene los productos y los almacena en un array
-$productosQuery = $con->getConexion()->prepare("SELECT cod_prod, nombre FROM Productos");
+$productosQuery = $con->getConexion()->prepare("SELECT * FROM Productos");
 $productosQuery->execute();
 $productos = $productosQuery->fetchAll(PDO::FETCH_ASSOC);
 
-$proveedoresQuery = $con->getConexion()->prepare("SELECT cod_prov, nombre FROM Proveedores");
+$pedidosQuery = $con->getConexion()->prepare("SELECT * FROM Pedidos");
+$pedidosQuery->execute();
+$pedidos = $pedidosQuery->fetchAll(PDO::FETCH_ASSOC);
+
+$comprasQuery = $con->getConexion()->prepare("SELECT * FROM Compras");
+$comprasQuery->execute();
+$compras = $comprasQuery->fetchAll(PDO::FETCH_ASSOC);
+
+$proveedoresQuery = $con->getConexion()->prepare("SELECT * FROM Proveedores");
 $proveedoresQuery->execute();
 $proveedores = $proveedoresQuery->fetchAll(PDO::FETCH_ASSOC);
 
-$almacenesQuery = $con->getConexion()->prepare("SELECT cod_alm, nombre FROM Almacen");
+$almacenesQuery = $con->getConexion()->prepare("SELECT * FROM Almacen");
 $almacenesQuery->execute();
 $almacenes = $almacenesQuery->fetchAll(PDO::FETCH_ASSOC);
 
-$distribuidoraQuery = $con->getConexion()->prepare("SELECT cod_dist, nombre FROM Distribuidora");
+$distribuidoraQuery = $con->getConexion()->prepare("SELECT * FROM Distribuidora");
 $distribuidoraQuery->execute();
 $distribuidoras = $distribuidoraQuery->fetchAll(PDO::FETCH_ASSOC);
 
-$empleadoQuery = $con->getConexion()->prepare("SELECT cod_emp, nombre, apellido FROM Empleados");
+$empleadoQuery = $con->getConexion()->prepare("SELECT * FROM Empleados");
 $empleadoQuery->execute();
 $empleados = $empleadoQuery->fetchAll(PDO::FETCH_ASSOC);
 
-$clienteQuery = $con->getConexion()->prepare("SELECT cod_cli, DNI FROM Clientes");
+$clienteQuery = $con->getConexion()->prepare("SELECT * FROM Clientes");
 $clienteQuery->execute();
 $clientes = $clienteQuery->fetchAll(PDO::FETCH_ASSOC);
 
@@ -100,10 +109,11 @@ if ($nombreTabla == "Pedidos") {
             echo "</select>";
             echo "</div>";
         } else {
+            $valorActual = $datosTabla[$id-1][$columna];
             echo "<input type='hidden' name='columnas[]' value='$columna'>";
             echo "<div class='mb-3'>";
             echo "<label for='$columna' class='form-label'>$columna</label>";
-            echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+            echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valorActual' required>";
             echo "</div>";
         }
     }
@@ -117,10 +127,11 @@ if ($nombreTabla == "Pedidos") {
             echo "<input type='date' class='form-control' id='$columna' name='$columna' placeholder='../../..' required>";
             echo "</div>";
         } else {
+            $valorActual = $datosTabla[$id-1][$columna]; //acaaaaaaa
             echo "<input type='hidden' name='columnas[]' value='$columna'>";
             echo "<div class='mb-3'>";
             echo "<label for='$columna' class='form-label'>$columna</label>";
-            echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+            echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valorActual' required>";
             echo "</div>";
         }
     }
@@ -157,20 +168,22 @@ if ($nombreTabla == "Pedidos") {
             echo "</select></div>";
         } else {
             $columna = array_keys($datosTabla[0])[$m];
+            $valorActual = $datosTabla[$id-1][$columna];
             echo "<input type='hidden' name='columnas[]' value='$columna'>";
             echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
             echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
-            echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+            echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valorActual' required>";
             echo "</div>";
         }
     }
 } else {
     for ($m = 1; $m < $mitad; $m++) {
         $columna = array_keys($datosTabla[0])[$m];
+        $valorActual = $datosTabla[$id-1][$columna];
         echo "<input type='hidden' name='columnas[]' value='$columna'>";
         echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
         echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
-        echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+        echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valorActual' required>";
         echo "</div>";
     }
 }
@@ -193,10 +206,11 @@ if ($nombreTabla == "Clientes") {
             echo "</select>";
             echo "</div>";
         } else {
+            $valorActual = $datosTabla[$id-1][$columna];
             echo "<input type='hidden' name='columnas[]' value='$columna'>";
             echo "<div class='mb-3'>";
             echo "<label for='$columna' class='form-label'>$columna</label>";
-            echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+            echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valorActual' required>";
             echo "</div>";
         }
     }
@@ -218,10 +232,11 @@ if ($nombreTabla == "Clientes") {
             }
             echo "</select></div>";
         } else {
+            $valorActual = $datosTabla[$id-1][$columna];
             echo "<input type='hidden' name='columnas[]' value='$columna'>";
             echo "<div class='mb-3'>";
             echo "<label for='$columna' class='form-label'>$columna</label>";
-            echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+            echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valorActual' required>";
             echo "</div>";
         }
     }
@@ -283,10 +298,11 @@ if ($nombreTabla == "Clientes") {
 
             echo "</select></div>";
         } else {
+            $valorActual = $datosTabla[$id-1][$columna];
             echo "<input type='hidden' name='columnas[]' value='$columna'>";
             echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
             echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
-            echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+            echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valorActual' required>";
             echo "</div>";
         }
     }
@@ -315,10 +331,11 @@ if ($nombreTabla == "Clientes") {
             echo "<input type='date' class='form-control' id='cal2' name='$columna' placeholder='../../..' disabled>";
             echo "</div>";
         } else {
+            $valorActual = $datosTabla[$id-1][$columna];
             echo "<input type='hidden' name='columnas[]' value='$columna'>";
             echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
             echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
-            echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+            echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valorActual' required>";
             echo "</div>";
         }
     }
@@ -361,10 +378,11 @@ if ($nombreTabla == "Clientes") {
 
                 echo "</select></div>";
             } else {
+                $valorActual = $datosTabla[$id-1][$columna];
                 echo "<input type='hidden' name='columnas[]' value='$columna'>";
                 echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
                 echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
-                echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+                echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valorActual' required>";
                 echo "</div>";
             }
         }
@@ -372,10 +390,11 @@ if ($nombreTabla == "Clientes") {
 } else {
     for ($n = $mitad; $n < $totalColumnas; $n++) {
         $columna = array_keys($datosTabla[0])[$n];
+        $valorActual = $datosTabla[$id-1][$columna];
         echo "<input type='hidden' name='columnas[]' value='$columna'>";
         echo "<div class='mb-3'>"; // Cambiar a una clase 'mb-3' para separar los campos
         echo "<label for='$columna' class='form-label'>$columna</label>"; // Usar 'form-label' para el título arriba del input
-        echo "<input type='text' class='form-control' id='$columna' name='$columna' required>";
+        echo "<input type='text' class='form-control' id='$columna' name='$columna' value='$valorActual' required>";
         echo "</div>";
     }
 }

@@ -1,5 +1,6 @@
 <?php
 // Encabezado de la tabla con los nombres de las columnas
+$posiciones = 0;
 for ($i = 0; $i < count(array_keys($datosTabla[0])); $i++) {
     if ($nombreTabla == "Productos") {
         switch (array_keys($datosTabla[0])[$i]) {
@@ -206,8 +207,9 @@ for ($j = 0; $j < count($datosTabla); $j++) {
 
     // Obtener el primer campo como clave para eliminar
     $id = $datosTabla[$j][array_key_first($datosTabla[$j])]; // Obtener el primer campo de la fila
+    $posiciones += 1;
     echo "<td class='table_body delete'>
-    <button id='abrirModal2' class='btn btn-primary abrirModal2' data-id='$id' onclick='pasarID(this)'> modificar registro</button>
+    <a href='?tabla=$nombreTabla&pos=$posiciones&id=$id' class='btn btn-primary abrirModal2' data-id=\"$id\" onclick='obtenerFila(this); pasarID(this)'>Modificar registro</a>
     <a href='?tabla=$nombreTabla&eliminar=true&id=$id' id='eliminar' class='btn btn-danger' onclick='return confirm(\"¿Estás seguro de que quieres eliminar este registro?\");'>Eliminar</a>
     </td>";
     echo "</tr>";
