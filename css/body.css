@@ -1,10 +1,10 @@
-/* Silvestre gay*/
+
 .table_head {
     background-color: #e6e4dd !important;
     color: #000000 !important;
 }
 .table_body {
-    background-color: #cbe1fa !important;
+    background-color: #cbdffa9f !important;
     opacity: .92;
 }
 .table {
@@ -39,8 +39,8 @@
     background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
 }
 body{
-    background-color:#e7e7e7 ;
-    background-image: url(../Iconos/fondo.jpeg);
+    background-color:#ede8d0 ;
+    /* background-image: url(../Iconos/fondo.jpeg); */
 }
 .modal-content {
     background-color:rgb(37, 68, 134);
@@ -70,11 +70,12 @@ body{
     cursor: pointer;
 }
 #abrirModal{
-    background-color: #e6e4dd !important;
+    background-color: #fba63880  !important;
     color: #000000;
     margin-left:0% !important;
     width: 200px !important;
     margin-bottom: 20px;
+    border-color: #bbb9b9;
 }
 #abrirModal:hover,
 #eliminar:hover{
@@ -92,4 +93,20 @@ p
         font-size: 25px;    
     
     
+}
+.boton-pag{
+    background-color: #fba63880 !important;
+    color: #000000 !important;
+    margin-left:0% !important;
+    width: 40px !important;
+    text-align: center;
+    border-color: #bbb9b9 !important;
+}
+.boton:active{
+    background-color: #fba63880  !important;
+    color: #000000;
+    margin-left:0% !important;
+    width: 40px !important;
+    text-align: center;
+    border-color: #bbb9b9;
 }
